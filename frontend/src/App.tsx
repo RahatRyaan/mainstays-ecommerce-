@@ -14,6 +14,7 @@ import Checkout from './pages/customer/Checkout';
 import OrderHistory from './pages/customer/OrderHistory';
 import OrderSuccess from './pages/customer/OrderSuccess';
 import AccountSettings from './pages/customer/AccountSettings';
+import Wishlist from './pages/customer/Wishlist';
 import Login from './pages/customer/Login';
 import Register from './pages/customer/Register';
 
@@ -43,6 +44,7 @@ function App() {
           <Route path="products/:id" element={<ProductDetail />} />
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<Checkout />} />
+          <Route path="wishlist" element={<Wishlist />} />
           <Route path="order-success/:orderId" element={<OrderSuccess />} />
           <Route path="orders" element={<OrderHistory />} />
           <Route path="settings" element={<AccountSettings />} />

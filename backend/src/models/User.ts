@@ -23,6 +23,8 @@ export interface IUser extends Document {
   resetPasswordCode?: string | undefined;
   resetPasswordExpire?: Date | undefined;
   refreshToken?: string;
+  googleId?: string;
+  avatar?: string;
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -117,6 +119,13 @@ const UserSchema = new Schema<IUser>(
     refreshToken: {
       type: String,
       select: false,
+    },
+    googleId: {
+      type: String,
+      index: true,
+    },
+    avatar: {
+      type: String,
     },
   },
   {

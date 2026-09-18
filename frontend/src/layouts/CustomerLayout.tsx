@@ -12,15 +12,18 @@ import {
   LayoutDashboard, 
   Store, 
   Sparkles,
-  Search
+  Search,
+  Heart
 } from 'lucide-react';
 import { ToastContainer } from '../components/ui/ToastContainer';
 import ThemeToggle from '../components/ThemeToggle';
 import WavyDivider from '../components/ui/WavyDivider';
+import { useWishlistStore } from '../store/wishlistStore';
 
 const CustomerLayout = () => {
   const { token, user, logout } = useAuthStore();
   const itemCount = useCartStore((state) => state.getItemCount());
+  const wishlistCount = useWishlistStore((state) => state.items.length);
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -150,6 +153,21 @@ const CustomerLayout = () => {
               {/* Theme Toggle */}
               <ThemeToggle />
 
+              {/* Wishlist Button */}
+              <Link
+                to="/wishlist"
+                className="relative p-2 rounded-full border border-border/80 hover:border-textPrimary bg-surface-muted/40 hover:bg-surface-muted text-textPrimary transition-all group flex items-center gap-1.5"
+                aria-label="Saved Wishlist"
+              >
+                <Heart className="w-4 h-4 text-textPrimary group-hover:text-[#D94E34] transition-colors" />
+                <span className="hidden sm:inline-block text-xs font-mono-tag font-bold uppercase tracking-wider">Saved</span>
+                {wishlistCount > 0 && (
+                  <span className="flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-[#9E6D08] text-[#FFF8E7] text-[10px] font-mono-tag font-bold shadow-xs">
+                    {wishlistCount}
+                  </span>
+                )}
+              </Link>
+
               {/* Cart Button */}
               <Link
                 to="/cart"
@@ -194,6 +212,14 @@ const CustomerLayout = () => {
                           </span>
                         </div>
                       </div>
+
+                      <Link
+                        to="/wishlist"
+                        className="flex items-center gap-2.5 px-3 py-2 text-xs font-mono-tag rounded-xl text-textPrimary hover:bg-surface-muted hover:text-[#D94E34] transition-colors"
+                      >
+                        <Heart className="w-3.5 h-3.5" />
+                        <span>Saved Wishlist ({wishlistCount})</span>
+                      </Link>
 
                       <Link
                         to="/orders"

@@ -192,3 +192,46 @@ export const changeUserPassword = async (userId: string, currentPass: string, ne
   await user.save();
   return { message: 'Password updated successfully' };
 };
+
+export const googleAuthUser = async (googleData: {
+  email: string;
+  name: string;
+  googleId?: string;
+  avatar?: string;
+}) => {
+  const { email, name, googleId, avatar } = googleData;
+  if (!email) {
+    throw new Error('Email is required from Google profile');
+  }
+
+  let user = await User.findOne({ email: email.toLowerCase() });
+
+  if (user) {
+    // Existing user: Link Google ID and Avatar if missing
+    if (googleId && !user.googleId) user.googleId = googleId;
+    if (avatar && !user.avatar) user.avatar = avatar;
+  } else {
+    // New user: Register as customer
+    const randomPassword = require('crypto').randomBytes(16).toString('hex');
+    user = await User.create({
+      name: name || email.split('@')[0],
+      email: email.toLowerCase(),
+      password: randomPassword,
+      role: 'customer',
+      googleId,
+      avatar,
+    });
+  }
+
+  const accessToken = generateAccessToken(user);
+  const refreshToken = generateRefreshToken(user);
+
+  user.refreshToken = refreshToken;
+  await user.save();
+
+  return {
+    user: sanitizeUser(user),
+    accessToken,
+    refreshToken,
+  };
+};

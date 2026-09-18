@@ -10,7 +10,8 @@ import {
   MessageSquare,
   Send,
   ChevronRight,
-  Leaf
+  Leaf,
+  Heart
 } from 'lucide-react';
 import apiClient from '../../api/client';
 import Button from '../../components/ui/Button';
@@ -18,6 +19,7 @@ import { ProductCard, type ProductItem } from '../../components/ProductCard';
 import { useCartStore } from '../../store/cartStore';
 import { useAuthStore } from '../../store/authStore';
 import { useToastStore } from '../../store/toastStore';
+import { useWishlistStore } from '../../store/wishlistStore';
 
 interface Review {
   _id: string;
@@ -38,6 +40,7 @@ const ProductDetail = () => {
   const { token, user } = useAuthStore();
   const addToCart = useCartStore((state) => state.addToCart);
   const addToast = useToastStore((state) => state.addToast);
+  const { toggleWishlist, isInWishlist } = useWishlistStore();
 
   const [product, setProduct] = useState<ProductDetailData | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -443,6 +446,30 @@ const ProductDetail = () => {
                   ⚡ Instant Checkout
                 </Button>
               </div>
+
+              {/* Wishlist Quick Save Action */}
+              <button
+                type="button"
+                onClick={() => {
+                  toggleWishlist({
+                    _id: product._id,
+                    title: product.name,
+                    price: currentPrice,
+                    images: images,
+                    category: product.category,
+                    inventory: currentStock,
+                    vendor: typeof product.vendor === 'object' && product.vendor ? { name: product.vendor.name } : undefined,
+                  });
+                }}
+                className={`w-full py-2.5 px-4 rounded-full border text-xs font-mono-tag uppercase tracking-wider font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                  isInWishlist(product._id)
+                    ? 'bg-[#D94E34]/10 border-[#D94E34] text-[#D94E34]'
+                    : 'bg-surface border-border/80 text-textPrimary hover:border-[#D94E34] hover:text-[#D94E34]'
+                }`}
+              >
+                <Heart className={`w-4 h-4 ${isInWishlist(product._id) ? 'fill-current text-[#D94E34]' : ''}`} />
+                <span>{isInWishlist(product._id) ? 'Saved in Your Wishlist' : 'Save to Wishlist'}</span>
+              </button>
             </div>
 
             {/* Trust Badges */}

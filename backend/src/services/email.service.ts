@@ -17,6 +17,24 @@ class EmailService {
       return this.transporter;
     }
 
+    // 1. Resend API Key / SMTP configuration
+    const resendKey = process.env.RESEND_API_KEY;
+    if (resendKey) {
+      logger.info('Configuring mail transport using Resend SMTP service (smtp.resend.com:465)');
+      this.transporter = nodemailer.createTransport({
+        host: 'smtp.resend.com',
+        port: 465,
+        secure: true,
+        auth: {
+          user: 'resend',
+          pass: resendKey,
+        },
+      });
+      this.isTestAccount = false;
+      return this.transporter;
+    }
+
+    // 2. Generic custom SMTP configuration (SendGrid, Mailgun, AWS SES, Gmail, etc.)
     const host = process.env.SMTP_HOST;
     const user = process.env.SMTP_USER;
     const pass = process.env.SMTP_PASS;
@@ -31,8 +49,8 @@ class EmailService {
         secure,
         auth: {
           user,
-          pass
-        }
+          pass,
+        },
       });
       this.isTestAccount = false;
       return this.transporter;

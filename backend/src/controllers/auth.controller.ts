@@ -192,3 +192,35 @@ export const changePassword = async (req: AuthRequest, res: Response, next: Next
     }
   }
 };
+
+export const googleLogin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const { email, name, googleId, avatar } = req.body;
+    if (!email) {
+      res.status(400).json({ success: false, message: 'Google account email is required' });
+      return;
+    }
+
+    const { user, accessToken, refreshToken } = await authService.googleAuthUser({
+      email,
+      name,
+      googleId,
+      avatar,
+    });
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    res.status(200).json({
+      success: true,
+      user,
+      accessToken,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

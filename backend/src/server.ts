@@ -20,6 +20,7 @@ import orderRoutes from './routes/order.routes';
 import dashboardRoutes from './routes/dashboard.routes';
 import adminRoutes from './routes/admin.routes';
 import payoutRoutes from './routes/payout.routes';
+import wishlistRoutes from './routes/wishlist.routes';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -65,6 +66,7 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/dashboards', dashboardRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/payouts', payoutRoutes);
+app.use('/api/wishlist', wishlistRoutes);
 
 // Global Error Handler
 app.use(errorHandler);

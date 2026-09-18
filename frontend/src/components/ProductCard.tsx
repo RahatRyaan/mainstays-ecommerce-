@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Star, ShoppingCart, Check, Sparkles } from 'lucide-react';
+import { Star, ShoppingCart, Check, Sparkles, Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useCartStore } from '../store/cartStore';
 import { useToastStore } from '../store/toastStore';
+import { useWishlistStore } from '../store/wishlistStore';
 
 export interface ProductItem {
   _id: string;
@@ -62,6 +63,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
   const isOutOfStock = totalStock <= 0;
   const isLowStock = totalStock > 0 && totalStock <= 5;
 
+  const { toggleWishlist, isInWishlist } = useWishlistStore();
+  const isSaved = isInWishlist(product._id);
+
+  const handleWishlistClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist({
+      _id: product._id,
+      title: product.name,
+      price: product.basePrice,
+      images: product.images || [mainImage],
+      category: product.category,
+      inventory: totalStock,
+      vendor: typeof product.vendor === 'object' && product.vendor ? { name: product.vendor.name } : undefined,
+    });
+  };
+
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -74,7 +92,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
       variantSku: defaultVariant?.sku,
       variantAttributes: defaultVariant?.attributes,
       name: product.name,
-      price: product.basePrice + (defaultVariant?.priceAdjustment || 0),
+      price: (product.basePrice || 0) + (defaultVariant?.priceAdjustment || 0),
       quantity: 1,
       imageUrl: mainImage,
       vendorId: vendorId,
@@ -115,8 +133,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
             </span>
           </div>
 
-          {/* Stock Badges */}
-          <div className="absolute top-3 right-3 z-10">
+          {/* Stock Badges & Wishlist Button */}
+          <div className="absolute top-3 right-3 z-10 flex items-center gap-1.5">
             {isOutOfStock ? (
               <span className="px-2.5 py-0.5 text-[11px] font-mono-tag font-bold rounded-full bg-[#FCEFEF] text-[#B83226] border border-[#F2C7C4] dark:bg-[#2E1D1D] dark:text-[#F48F87] dark:border-[#522929]">
                 Sold Out
@@ -126,6 +144,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
                 <Sparkles className="w-3 h-3 text-[#E59819]" /> Few Left
               </span>
             ) : null}
+
+            {/* Wishlist Heart Button */}
+            <button
+              type="button"
+              onClick={handleWishlistClick}
+              className={`w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md border shadow-2xs transition-all duration-200 cursor-pointer ${
+                isSaved
+                  ? 'bg-[#D94E34] text-[#FFF8E7] border-[#D94E34] scale-105'
+                  : 'bg-white/85 dark:bg-stone-900/85 text-textPrimary hover:text-[#D94E34] hover:bg-white border-white/60 dark:border-stone-800'
+              }`}
+              title={isSaved ? 'Remove from Wishlist' : 'Save to Wishlist'}
+            >
+              <Heart className={`w-4 h-4 ${isSaved ? 'fill-current text-[#FFF8E7]' : 'stroke-[1.8]'}`} />
+            </button>
           </div>
         </div>
 
