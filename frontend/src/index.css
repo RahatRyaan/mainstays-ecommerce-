@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-surface-muted: var(--color-surface-muted);
+  --color-border: var(--color-border);
+  --color-text-primary: var(--color-text-primary);
+  --color-textPrimary: var(--color-text-primary);
+  --color-text-muted: var(--color-text-muted);
+  --color-textMuted: var(--color-text-muted);
+  --color-brand: var(--color-brand);
+  --color-brand-hover: var(--color-brand-hover);
+  --color-brandHover: var(--color-brand-hover);
+  --color-brand-cream: #FFF8E7;
+  --color-brand-terracotta: #D94E34;
+  --color-brand-amber: #E59819;
+  --color-brand-sage: #3F5E4D;
+  --color-accent: var(--color-accent);
+  --color-warning: var(--color-warning);
+  --color-danger: var(--color-danger);
+  --color-success: var(--color-success);
+
+  --font-serif: "Fraunces", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Space Mono", monospace;
+  --font-inter: "Plus Jakarta Sans", sans-serif;
+  --font-sora: "Fraunces", Georgia, serif;
+}
+
+@layer base {
+  :root {
+    --color-bg: #FAF7F0;
+    --color-surface: #FFFDF9;
+    --color-surface-muted: #F3ECE1;
+    --color-border: #E8E0D2;
+    --color-text-primary: #1C1917;
+    --color-text-muted: #57534E;
+    --color-brand: #D94E34;
+    --color-brand-hover: #C03B22;
+    --color-accent: #E59819;
+    --color-warning: #D97706;
+    --color-danger: #DC2626;
+    --color-success: #3F5E4D;
+  }
+
+  .dark {
+    --color-bg: #141312;
+    --color-surface: #1E1C1A;
+    --color-surface-muted: #272522;
+    --color-border: #38342F;
+    --color-text-primary: #FAF7F0;
+    --color-text-muted: #A8A29E;
+    --color-brand: #E05D44;
+    --color-brand-hover: #F07058;
+    --color-accent: #F5A728;
+    --color-warning: #FBBF24;
+    --color-danger: #EF4444;
+    --color-success: #4E7460;
+  }
+}
+
+@layer utilities {
+  body {
+    @apply bg-bg text-textPrimary font-sans antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif tracking-tight text-textPrimary;
+  }
+
+  .font-editorial {
+    font-family: 'Fraunces', Georgia, serif;
+    font-optical-sizing: auto;
+  }
+
+  .font-mono-tag {
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* Scallop & Wavy utility */
+  .scallop-border {
+    background-image: radial-gradient(circle at 10px -5px, transparent 12px, currentColor 13px);
+    background-size: 20px 20px;
+  }
+
+  /* Subtle Editorial Card Shadow */
+  .shadow-editorial {
+    box-shadow: 0 4px 20px -2px rgba(28, 25, 23, 0.06), 0 2px 6px -1px rgba(28, 25, 23, 0.04);
+  }
+
+  .shadow-editorial-hover {
+    box-shadow: 0 12px 32px -4px rgba(28, 25, 23, 0.12), 0 4px 12px -2px rgba(28, 25, 23, 0.06);
+  }
+
+  /* Neo-stamp hard shadow */
+  .shadow-stamp {
+    box-shadow: 3px 3px 0px 0px var(--color-text-primary);
+  }
+}
+
+/* Keyframes for Marquee */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+.animate-marquee-fast {
+  display: flex;
+  width: max-content;
+  animation: marquee 16s linear infinite;
+}
