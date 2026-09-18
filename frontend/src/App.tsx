@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 
 // Layouts
 import CustomerLayout from './layouts/CustomerLayout';
@@ -36,6 +37,7 @@ import CouponManagement from './pages/admin/CouponManagement';
 function App() {
   return (
     <BrowserRouter>
+      <Analytics />
       <Routes>
         {/* Customer Routes */}
         <Route path="/" element={<CustomerLayout />}>
