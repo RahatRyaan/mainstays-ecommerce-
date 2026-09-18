@@ -121,7 +121,7 @@ export class OrderService {
       shipping: checkoutDetails.shipping,
       discount: checkoutDetails.discount,
       paymentIntentId: paymentIntent.paymentIntentId,
-      paymentStatus: 'paid', // Auto-mark paid for seamless demo user experience
+      paymentStatus: directPayload?.paymentMethod === 'card' ? 'paid' : 'pending',
       shippingAddress: formattedAddress,
     });
 
@@ -140,13 +140,17 @@ export class OrderService {
           price: vi.price,
         })),
         subTotal: vendorSubtotal,
-        status: 'processing' // Initial status for paid order
+        status: directPayload?.paymentMethod === 'card' ? 'processing' : 'pending'
       });
     }
 
-    // Clear backend cart if exists
+    // Clear backend cart items if cart exists
     try {
-      await Cart.deleteOne({ user: new Types.ObjectId(userId) });
+      await Cart.findOneAndUpdate(
+        { user: new Types.ObjectId(userId) },
+        { $set: { items: [], appliedCoupon: null } },
+        { upsert: false }
+      );
     } catch (_) {}
 
     return {

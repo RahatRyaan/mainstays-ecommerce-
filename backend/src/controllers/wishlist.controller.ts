@@ -9,7 +9,7 @@ export class WishlistController {
    */
   static async getWishlist(req: any, res: Response): Promise<void> {
     try {
-      const userId = req.user._id;
+      const userId = req.user?.id || req.user?._id;
       let wishlist = await Wishlist.findOne({ user: userId }).populate({
         path: 'products',
         match: { isDeleted: { $ne: true } },
@@ -34,7 +34,7 @@ export class WishlistController {
    */
   static async toggleWishlist(req: any, res: Response): Promise<void> {
     try {
-      const userId = req.user._id;
+      const userId = req.user?.id || req.user?._id;
       const { productId } = req.body;
 
       if (!productId) {
@@ -94,7 +94,7 @@ export class WishlistController {
    */
   static async clearWishlist(req: any, res: Response): Promise<void> {
     try {
-      const userId = req.user._id;
+      const userId = req.user?.id || req.user?._id;
       await Wishlist.findOneAndUpdate(
         { user: userId },
         { $set: { products: [] } },
