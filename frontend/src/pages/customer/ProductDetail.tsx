@@ -367,7 +367,7 @@ const ProductDetail = () => {
                         }}
                         className={`px-4 py-2 rounded-2xl text-xs font-mono-tag uppercase tracking-wider border transition-all cursor-pointer ${
                           isSelected
-                            ? 'bg-[#1C1917] text-[#FAF7F0] border-[#1C1917] dark:bg-[#FAF7F0] dark:text-[#1C1917] font-bold shadow-xs'
+                            ? 'bg-[#D94E34] text-[#FFF8E7] border-[#D94E34] font-bold shadow-xs'
                             : 'bg-surface border-border/80 text-textPrimary hover:border-textPrimary'
                         }`}
                       >
@@ -617,7 +617,7 @@ const ProductDetail = () => {
                     <div key={rev._id} className="p-5 rounded-3xl bg-surface border border-border/80 space-y-2.5 shadow-2xs">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 rounded-full bg-[#1C1917] text-[#FAF7F0] dark:bg-[#FAF7F0] dark:text-[#1C1917] font-mono-tag font-bold text-xs flex items-center justify-center">
+                          <div className="w-7 h-7 rounded-full bg-[#D94E34] text-[#FFF8E7] font-mono-tag font-bold text-xs flex items-center justify-center">
                             {(rev.user?.name || 'C').charAt(0).toUpperCase()}
                           </div>
                           <span className="font-serif font-bold text-sm text-textPrimary">

@@ -309,10 +309,10 @@ const Home = () => {
                   </div>
 
                   {/* Floating Guarantee Stamp */}
-                  <div className="absolute bottom-4 right-4 bg-[#1C1917] text-[#FAF7F0] rounded-2xl px-3.5 py-2 shadow-editorial flex items-center gap-2">
-                    <Leaf className="w-4 h-4 text-[#E59819]" />
+                  <div className="absolute bottom-4 right-4 bg-surface/95 backdrop-blur-md text-textPrimary border border-border/80 dark:bg-[#1C1917] dark:text-[#FAF7F0] dark:border-[#38342F] rounded-2xl px-3.5 py-2 shadow-sm flex items-center gap-2">
+                    <Leaf className="w-4 h-4 text-[#D94E34] dark:text-[#E59819]" />
                     <div className="text-left">
-                      <div className="text-[10px] font-mono-tag uppercase tracking-widest text-[#E59819] font-bold">100% Organic</div>
+                      <div className="text-[10px] font-mono-tag uppercase tracking-widest text-[#D94E34] dark:text-[#E59819] font-bold">100% Organic</div>
                       <div className="text-xs font-serif font-bold">Small-Batch Made</div>
                     </div>
                   </div>
@@ -519,7 +519,7 @@ const Home = () => {
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4">
               {kidsProducts.slice(0, 6).map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}
@@ -531,12 +531,12 @@ const Home = () => {
 
       {/* 5. CURATED DEPARTMENTS / CATEGORIES (Mainstays Catalog) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8 gap-4">
           <div>
             <span className="text-xs font-mono-tag font-bold uppercase tracking-wider text-[#D94E34] block mb-1">
               Curated Collections
             </span>
-            <h2 className="font-serif font-black text-3xl sm:text-4xl text-textPrimary tracking-tight">
+            <h2 className="font-serif font-black text-2xl sm:text-4xl text-textPrimary tracking-tight">
               Explore by department
             </h2>
           </div>
@@ -549,12 +549,12 @@ const Home = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-5">
           {categories.map((cat) => (
             <Link
               key={cat.name}
               to={cat.slug ? `/products?category=${cat.slug}` : '/products'}
-              className="group relative rounded-3xl overflow-hidden bg-surface border border-border/80 hover:border-textPrimary/30 shadow-xs hover:shadow-editorial-hover transition-all duration-300 flex flex-col"
+              className="group relative rounded-2xl sm:rounded-3xl overflow-hidden bg-surface border border-border/80 hover:border-textPrimary/30 shadow-xs hover:shadow-editorial-hover transition-all duration-300 flex flex-col"
             >
               <div className="aspect-[4/3] w-full overflow-hidden bg-[#F3ECE1] relative">
                 <img
@@ -563,20 +563,20 @@ const Home = () => {
                   loading="lazy"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
-                <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-surface/90 backdrop-blur-md text-textPrimary text-[9px] font-mono-tag font-bold uppercase tracking-wider border border-border/60">
+                <span className="absolute top-2 left-2 sm:top-2.5 sm:left-2.5 px-2 py-0.5 rounded-full bg-surface/90 backdrop-blur-md text-textPrimary text-[8px] sm:text-[9px] font-mono-tag font-bold uppercase tracking-wider border border-border/60">
                   {cat.badge}
                 </span>
               </div>
-              <div className="p-4 flex flex-col flex-1 justify-between">
+              <div className="p-3 sm:p-4 flex flex-col flex-1 justify-between">
                 <div>
-                  <h3 className="font-serif font-bold text-base text-textPrimary group-hover:text-[#D94E34] transition-colors leading-snug">
+                  <h3 className="font-serif font-bold text-sm sm:text-base text-textPrimary group-hover:text-[#D94E34] transition-colors leading-snug">
                     {cat.name}
                   </h3>
-                  <p className="text-[11px] font-sans text-textMuted mt-1 line-clamp-2">
+                  <p className="text-[10px] sm:text-[11px] font-sans text-textMuted mt-0.5 sm:mt-1 line-clamp-2">
                     {cat.tagline}
                   </p>
                 </div>
-                <div className="mt-3 pt-2.5 border-t border-border/50 flex items-center justify-between text-[11px] font-mono-tag text-textMuted">
+                <div className="mt-2 sm:mt-3 pt-2 sm:pt-2.5 border-t border-border/50 flex items-center justify-between text-[10px] sm:text-[11px] font-mono-tag text-textMuted">
                   <span>{cat.count}</span>
                   <span className="font-bold text-[#D94E34] group-hover:translate-x-1 transition-transform">&rarr;</span>
                 </div>
@@ -588,12 +588,12 @@ const Home = () => {
 
       {/* 6. FEATURED BESTSELLERS */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8 gap-4">
           <div>
             <span className="text-xs font-mono-tag font-bold uppercase tracking-wider text-[#D94E34] block mb-1">
               Most Loved
             </span>
-            <h2 className="font-serif font-black text-3xl sm:text-4xl text-textPrimary tracking-tight">
+            <h2 className="font-serif font-black text-2xl sm:text-4xl text-textPrimary tracking-tight">
               Everyday Mainstays
             </h2>
           </div>
@@ -607,13 +607,13 @@ const Home = () => {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="h-80 rounded-2xl bg-surface-muted/60 animate-pulse border border-border/50" />
+              <div key={i} className="h-64 sm:h-80 rounded-2xl bg-surface-muted/60 animate-pulse border border-border/50" />
             ))}
           </div>
         ) : featuredProducts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {featuredProducts.slice(0, 8).map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
@@ -626,31 +626,31 @@ const Home = () => {
       </section>
 
       {/* 7. DEDICATED BRAND STORY SECTION (Anchor: #brand-story) */}
-      <section id="brand-story" className="bg-[#1C1917] text-[#FAF7F0] py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden scroll-mt-24">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <section id="brand-story" className="bg-[#F5ECE1] text-textPrimary dark:bg-[#181614] dark:text-[#FAF7F0] py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-y border-[#E8DFCE] dark:border-[#38342F] relative overflow-hidden scroll-mt-24">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
           
           <div className="lg:col-span-6 space-y-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#272421] border border-[#3E3933] text-[#E59819] text-xs font-mono-tag font-bold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EAE0D0] text-[#873523] border border-[#D8C7B0] dark:bg-[#272421] dark:border-[#3E3933] dark:text-[#E59819] text-xs font-mono-tag font-bold uppercase tracking-wider">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Our Brand Philosophy & Origin</span>
             </div>
 
-            <h2 className="font-serif font-black text-3xl sm:text-5xl text-[#FAF7F0] tracking-tight leading-tight">
+            <h2 className="font-serif font-black text-3xl sm:text-5xl text-textPrimary dark:text-[#FAF7F0] tracking-tight leading-tight">
               Honest craft for intentional spaces.
             </h2>
 
-            <p className="font-sans text-sm sm:text-base text-[#C7BFB5] leading-relaxed">
+            <p className="font-sans text-sm sm:text-base text-textMuted dark:text-[#C7BFB5] leading-relaxed">
               Mainstays was founded on a simple conviction: the objects we invite into our homes should be made with respect for the earth, reverence for traditional craftsmanship, and built to outlive fleeting seasonal trends.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
               <div className="border-l-2 border-[#D94E34] pl-4 space-y-1">
-                <span className="font-serif font-bold text-lg text-[#FAF7F0]">Direct Artisan Guild</span>
-                <p className="text-xs font-mono-tag text-[#A8A29E]">We partner directly with independent family-owned studios worldwide.</p>
+                <span className="font-serif font-bold text-lg text-textPrimary dark:text-[#FAF7F0]">Direct Artisan Guild</span>
+                <p className="text-xs font-mono-tag text-textMuted dark:text-[#A8A29E]">We partner directly with independent family-owned studios worldwide.</p>
               </div>
               <div className="border-l-2 border-[#E59819] pl-4 space-y-1">
-                <span className="font-serif font-bold text-lg text-[#FAF7F0]">Zero Plastic Pledge</span>
-                <p className="text-xs font-mono-tag text-[#A8A29E]">100% recyclable, compostable, and plastic-free packaging on every order.</p>
+                <span className="font-serif font-bold text-lg text-textPrimary dark:text-[#FAF7F0]">Zero Plastic Pledge</span>
+                <p className="text-xs font-mono-tag text-textMuted dark:text-[#A8A29E]">100% recyclable, compostable, and plastic-free packaging on every order.</p>
               </div>
             </div>
 
@@ -663,7 +663,7 @@ const Home = () => {
               </Link>
               <Link
                 to="/register"
-                className="px-6 py-3.5 rounded-full bg-[#272421] hover:bg-[#38342F] text-[#FAF7F0] border border-[#3E3933] text-xs font-mono-tag font-bold uppercase tracking-wider transition-all"
+                className="px-6 py-3.5 rounded-full bg-surface hover:bg-surface-muted text-textPrimary border border-border/80 dark:bg-[#272421] dark:hover:bg-[#38342F] dark:text-[#FAF7F0] dark:border-[#3E3933] text-xs font-mono-tag font-bold uppercase tracking-wider transition-all"
               >
                 Become an Artisan Vendor
               </Link>
@@ -671,19 +671,19 @@ const Home = () => {
           </div>
 
           <div className="lg:col-span-6 relative">
-            <div className="relative rounded-3xl overflow-hidden border border-[#38342F] bg-[#272421] p-3 shadow-2xl">
-              <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-[#1E1C1A] relative">
+            <div className="relative rounded-3xl overflow-hidden border border-border/80 dark:border-[#38342F] bg-surface dark:bg-[#272421] p-3 shadow-xl">
+              <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-surface-muted dark:bg-[#1E1C1A] relative">
                 <img
                   src="https://images.unsplash.com/photo-1544816155-12df9643f363?w=1000&auto=format&fit=crop&q=80"
                   alt="Artisan Crafting Process"
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1C1917]/80 via-transparent to-transparent" />
-                <div className="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-[#1C1917]/90 backdrop-blur-md border border-[#38342F]">
-                  <div className="font-serif font-bold text-sm text-[#FAF7F0]">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-surface/95 dark:bg-[#1C1917]/90 backdrop-blur-md border border-border/80 dark:border-[#38342F] shadow-sm">
+                  <div className="font-serif font-bold text-sm text-textPrimary dark:text-[#FAF7F0]">
                     "Every vessel tells the story of the hands that shaped it."
                   </div>
-                  <div className="text-[11px] font-mono-tag text-[#E59819] uppercase tracking-wider mt-1">
+                  <div className="text-[11px] font-mono-tag text-[#D94E34] dark:text-[#E59819] uppercase tracking-wider mt-1">
                     — The Mainstays Guild Manifesto
                   </div>
                 </div>
@@ -708,7 +708,7 @@ const Home = () => {
                     alt={selectedColorway.name}
                     className="w-full h-full object-cover transition-all duration-500"
                   />
-                  <div className="absolute top-4 left-4 bg-[#1C1917] text-[#FAF7F0] px-3 py-1 rounded-full text-[10px] font-mono-tag font-bold uppercase tracking-wider">
+                  <div className="absolute top-4 left-4 bg-surface/90 backdrop-blur-md text-textPrimary border border-border/80 dark:bg-[#1C1917] dark:text-[#FAF7F0] dark:border-[#38342F] px-3 py-1 rounded-full text-[10px] font-mono-tag font-bold uppercase tracking-wider shadow-xs">
                     {selectedColorway.name}
                   </div>
                 </div>

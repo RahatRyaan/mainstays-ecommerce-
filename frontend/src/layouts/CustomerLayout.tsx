@@ -74,13 +74,13 @@ const CustomerLayout = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-bg text-textPrimary selection:bg-[#D94E34]/20 selection:text-[#D94E34]">
+    <div className="min-h-screen flex flex-col bg-bg text-textPrimary selection:bg-[#D94E34]/20 selection:text-[#D94E34] w-full max-w-full overflow-x-hidden relative">
       <ToastContainer />
 
       {/* Top Ticker / Promo Bar */}
       <div className="bg-[#D94E34] text-[#FFF8E7] text-xs py-2 px-4 font-mono-tag tracking-wider flex items-center justify-center gap-2 border-b border-[#C03B22]">
         <Sparkles className="w-3.5 h-3.5 animate-pulse text-[#FFF8E7]" />
-        <span>
+        <span className="text-center text-[11px] sm:text-xs">
           COMPLIMENTARY SHIPPING OVER $50 • USE CODE <strong className="underline font-bold decoration-[#FFF8E7]/60">WELCOME10</strong> FOR 10% OFF
         </span>
       </div>
@@ -100,8 +100,8 @@ const CustomerLayout = () => {
                   <span className="font-serif font-black text-xl sm:text-2xl text-textPrimary tracking-tight group-hover:text-[#D94E34] transition-colors leading-none">
                     Mainstays
                   </span>
-                  <span className="text-[10px] font-mono-tag text-textMuted tracking-widest uppercase">
-                    Everyday Essentials
+                  <span className="font-mono-tag text-[9px] uppercase tracking-widest text-[#D94E34] font-bold mt-1">
+                    Atelier & Provisions
                   </span>
                 </div>
               </Link>
@@ -152,7 +152,7 @@ const CustomerLayout = () => {
               <form onSubmit={handleSearchSubmit} className="hidden md:flex relative w-44 lg:w-52">
                 <input
                   type="text"
-                  placeholder="Search goods..."
+                  placeholder="Search 22+ goods..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full bg-surface-muted/60 border border-border/80 rounded-full pl-8 pr-3 py-1.5 text-xs font-mono-tag text-textPrimary placeholder:text-textMuted focus:outline-none focus:ring-2 focus:ring-[#D94E34]/30 focus:border-[#D94E34] transition-all"
@@ -308,7 +308,7 @@ const CustomerLayout = () => {
             <form onSubmit={handleSearchSubmit} className="relative">
               <input
                 type="text"
-                placeholder="Search products..."
+                placeholder="Search 22+ goods..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-surface-muted border border-border rounded-xl pl-9 pr-4 py-2 text-xs font-mono-tag text-textPrimary placeholder:text-textMuted focus:outline-none focus:ring-2 focus:ring-[#D94E34]"
@@ -352,27 +352,25 @@ const CustomerLayout = () => {
       </header>
 
       {/* Main Routed Page Content */}
-      <main className="flex-1">
+      <main className="flex-1 w-full max-w-full overflow-x-hidden">
         <Outlet />
       </main>
 
-      {/* Editorial Footer */}
-      <footer className="bg-[#1C1917] text-[#FAF7F0] border-t border-[#38342F] relative mt-16 overflow-hidden">
-        {/* Top Scallop Edge */}
-        <WavyDivider height={12} fillColor="fill-[#1C1917]" strokeColor="stroke-[#38342F]" flip={true} />
-
-        {/* Newsletter Banner Strip */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-b border-[#38342F]">
-          <div className="bg-[#272421] border border-[#3E3933] rounded-3xl p-6 sm:p-10 flex flex-col lg:flex-row items-center justify-between gap-6 relative overflow-hidden">
-            <div className="space-y-2 text-center lg:text-left max-w-lg">
-              <span className="inline-block px-3 py-1 rounded-full bg-[#D94E34] text-[#FFF8E7] text-[10px] font-mono-tag uppercase tracking-wider font-bold">
+      {/* Editorial Refined Footer (Clean Light Surface on Light Mode, Sleek Dark on Dark Mode) */}
+      <footer className="bg-[#F5F1E8] text-[#2C2825] dark:bg-[#181614] dark:text-[#FAF7F0] border-t border-[#E5DDD0] dark:border-[#38342F] relative mt-16 overflow-hidden">
+        
+        {/* Newsletter Strip */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-b border-[#E5DDD0] dark:border-[#38342F]">
+          <div className="bg-surface border border-border/80 rounded-2xl p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-xs">
+            <div className="space-y-1.5 text-center lg:text-left max-w-lg">
+              <span className="inline-block px-3 py-0.5 rounded-full bg-[#D94E34] text-[#FFF8E7] text-[10px] font-mono-tag uppercase tracking-wider font-bold">
                 The Mainstays Dispatch
               </span>
-              <h3 className="font-serif font-bold text-2xl sm:text-3xl text-[#FAF7F0] tracking-tight">
+              <h3 className="font-serif font-bold text-xl sm:text-2xl text-textPrimary tracking-tight">
                 Join our table & get 10% off your first haul
               </h3>
-              <p className="text-xs font-mono-tag text-[#A8A29E]">
-                Get early access to weekly limited drops, maker stories, and secret sales.
+              <p className="text-xs font-mono-tag text-textMuted">
+                Get early access to weekly small-batch drops, maker stories, and secret sales.
               </p>
             </div>
 
@@ -383,11 +381,11 @@ const CustomerLayout = () => {
                 placeholder="Enter your email address"
                 value={newsletterEmail}
                 onChange={(e) => setNewsletterEmail(e.target.value)}
-                className="w-full sm:w-72 bg-[#1C1917] border border-[#3E3933] rounded-xl px-4 py-3 text-xs font-mono-tag text-[#FAF7F0] placeholder:text-[#78716C] focus:outline-none focus:ring-2 focus:ring-[#D94E34] transition-all"
+                className="w-full sm:w-72 bg-surface-muted border border-border/80 rounded-xl px-4 py-2.5 text-xs font-mono-tag text-textPrimary placeholder:text-textMuted focus:outline-none focus:ring-2 focus:ring-[#D94E34] transition-all"
               />
               <button
                 type="submit"
-                className="px-5 py-3 bg-[#D94E34] hover:bg-[#C03B22] text-[#FFF8E7] font-mono-tag font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-sm shrink-0 cursor-pointer"
+                className="px-5 py-2.5 bg-[#D94E34] hover:bg-[#C03B22] text-[#FFF8E7] font-mono-tag font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-2xs shrink-0 cursor-pointer"
               >
                 {newsletterSubscribed ? 'Subscribed!' : 'Subscribe'}
               </button>
@@ -395,52 +393,52 @@ const CustomerLayout = () => {
           </div>
         </div>
 
-        {/* Footer Navigation Columns */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
+        {/* Footer Balanced 4-Column Navigation */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
             
             {/* Column 1: Brand Wordmark & Ethos */}
-            <div className="lg:col-span-2 space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-[#FAF7F0] text-[#1C1917] flex items-center justify-center font-serif font-black text-lg shadow-sm">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-full bg-[#D94E34] text-[#FFF8E7] flex items-center justify-center font-serif font-black text-base shadow-xs">
                   M
                 </div>
-                <span className="font-serif font-black text-2xl text-[#FAF7F0] tracking-tight">
+                <span className="font-serif font-black text-xl text-textPrimary tracking-tight">
                   Mainstays
                 </span>
               </div>
-              <p className="text-xs font-sans text-[#A8A29E] leading-relaxed max-w-sm">
-                Thoughtfully-sourced goods and curated essentials designed to elevate daily rituals. Crafted with care, built to last, and delivered with love.
+              <p className="text-xs font-sans text-textMuted leading-relaxed max-w-xs">
+                Thoughtfully-sourced goods and curated essentials designed to elevate daily rituals.
               </p>
               
-              <div className="pt-2 space-y-2">
-                <div className="text-[10px] font-mono-tag uppercase tracking-wider text-[#A8A29E]">Payment & Protection</div>
-                <div className="flex flex-wrap gap-2 text-xs font-mono-tag text-[#FAF7F0]">
-                  <span className="px-2.5 py-1 bg-[#272421] border border-[#38342F] rounded-lg">💳 Visa</span>
-                  <span className="px-2.5 py-1 bg-[#272421] border border-[#38342F] rounded-lg">💳 Mastercard</span>
-                  <span className="px-2.5 py-1 bg-[#272421] border border-[#38342F] rounded-lg">⚡ Stripe</span>
-                  <span className="px-2.5 py-1 bg-[#272421] border border-[#38342F] rounded-lg">🍎 Apple Pay</span>
+              <div className="pt-2 space-y-1.5">
+                <div className="text-[10px] font-mono-tag uppercase tracking-wider text-textMuted font-bold">Secure Checkout</div>
+                <div className="flex flex-wrap gap-1.5 text-[11px] font-mono-tag text-textPrimary">
+                  <span className="px-2 py-0.5 bg-surface border border-border/80 rounded-md">💳 Visa</span>
+                  <span className="px-2 py-0.5 bg-surface border border-border/80 rounded-md">💳 Mastercard</span>
+                  <span className="px-2 py-0.5 bg-surface border border-border/80 rounded-md">⚡ Stripe</span>
+                  <span className="px-2 py-0.5 bg-surface border border-border/80 rounded-md">🍎 Apple Pay</span>
                 </div>
               </div>
             </div>
 
             {/* Column 2: Categories */}
             <div>
-              <h4 className="font-mono-tag font-bold text-xs text-[#FAF7F0] uppercase tracking-wider mb-4">Categories</h4>
-              <ul className="space-y-2.5 text-xs font-mono-tag text-[#A8A29E]">
+              <h4 className="font-mono-tag font-bold text-xs text-textPrimary uppercase tracking-wider mb-3">Curated Shops</h4>
+              <ul className="space-y-2 text-xs font-mono-tag text-textMuted">
                 <li><Link to="/products?category=Electronics" className="hover:text-[#D94E34] transition-colors">Electronics & Sound</Link></li>
                 <li><Link to="/products?category=Fashion" className="hover:text-[#D94E34] transition-colors">Everyday Apparel</Link></li>
                 <li><Link to="/products?category=Kids" className="hover:text-[#D94E34] transition-colors flex items-center gap-1.5"><span className="text-[#E59819]">🧸</span> Kids & Nursery</Link></li>
                 <li><Link to="/products?category=Home" className="hover:text-[#D94E34] transition-colors">Home & Living</Link></li>
-                <li><Link to="/products?category=Beauty" className="hover:text-[#D94E34] transition-colors">Apothecary & Self-Care</Link></li>
+                <li><Link to="/products?category=Beauty" className="hover:text-[#D94E34] transition-colors">Skin Care & Self-Care</Link></li>
                 <li><Link to="/products" className="hover:text-[#D94E34] text-[#D94E34] font-bold transition-colors">Browse Full Catalog &rarr;</Link></li>
               </ul>
             </div>
 
             {/* Column 3: Customer Care */}
             <div>
-              <h4 className="font-mono-tag font-bold text-xs text-[#FAF7F0] uppercase tracking-wider mb-4">Customer Care</h4>
-              <ul className="space-y-2.5 text-xs font-mono-tag text-[#A8A29E]">
+              <h4 className="font-mono-tag font-bold text-xs text-textPrimary uppercase tracking-wider mb-3">Customer Care</h4>
+              <ul className="space-y-2 text-xs font-mono-tag text-textMuted">
                 <li><Link to="/orders" className="hover:text-[#D94E34] transition-colors">Track Your Order</Link></li>
                 <li><Link to="/cart" className="hover:text-[#D94E34] transition-colors">Review Shopping Bag</Link></li>
                 <li><Link to="/settings" className="hover:text-[#D94E34] transition-colors">Account Settings</Link></li>
@@ -451,8 +449,8 @@ const CustomerLayout = () => {
 
             {/* Column 4: Portals & Makers */}
             <div>
-              <h4 className="font-mono-tag font-bold text-xs text-[#FAF7F0] uppercase tracking-wider mb-4">Maker Portals</h4>
-              <ul className="space-y-2.5 text-xs font-mono-tag text-[#A8A29E]">
+              <h4 className="font-mono-tag font-bold text-xs text-textPrimary uppercase tracking-wider mb-3">Maker Portals</h4>
+              <ul className="space-y-2 text-xs font-mono-tag text-textMuted">
                 <li><Link to="/vendor/apply" className="hover:text-[#D94E34] transition-colors">Become a Verified Maker</Link></li>
                 <li><Link to="/vendor/dashboard" className="hover:text-[#D94E34] transition-colors">Maker Dashboard</Link></li>
                 <li><Link to="/vendor/products" className="hover:text-[#D94E34] transition-colors">Product Inventory</Link></li>
@@ -464,13 +462,13 @@ const CustomerLayout = () => {
           </div>
 
           {/* Bottom Copyright & Guarantee */}
-          <div className="mt-12 pt-8 border-t border-[#38342F] flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono-tag text-[#78716C] gap-4">
+          <div className="mt-10 pt-6 border-t border-[#E5DDD0] dark:border-[#38342F] flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono-tag text-textMuted gap-4">
             <p>&copy; {new Date().getFullYear()} Mainstays Marketplace Inc. Crafted with Care.</p>
-            <div className="flex flex-wrap items-center gap-6">
-              <span className="hover:text-[#FAF7F0] transition-colors cursor-pointer">Privacy Terms</span>
-              <span className="hover:text-[#FAF7F0] transition-colors cursor-pointer">Terms of Service</span>
-              <span className="hover:text-[#FAF7F0] transition-colors cursor-pointer">Ethical Sourcing</span>
-              <span className="hover:text-[#FAF7F0] transition-colors cursor-pointer">Status: 100% Operational</span>
+            <div className="flex flex-wrap items-center gap-5">
+              <span className="hover:text-textPrimary transition-colors cursor-pointer">Privacy Terms</span>
+              <span className="hover:text-textPrimary transition-colors cursor-pointer">Terms of Service</span>
+              <span className="hover:text-textPrimary transition-colors cursor-pointer">Ethical Sourcing</span>
+              <span className="hover:text-textPrimary transition-colors cursor-pointer">Status: 100% Operational</span>
             </div>
           </div>
         </div>

@@ -387,23 +387,26 @@ const ProductListing = () => {
                   Department
                 </label>
                 <div className="space-y-1">
-                  {categoryOptions.map((opt) => (
-                    <button
-                      key={opt.value}
-                      onClick={() => {
-                        setCategory(opt.value);
-                        updateFilters({ category: opt.value });
-                        setMobileFiltersOpen(false);
-                      }}
-                      className={`w-full text-left px-3.5 py-2.5 rounded-2xl text-xs font-mono-tag uppercase tracking-wider transition-colors ${
-                        category === opt.value 
-                          ? 'bg-[#1C1917] text-[#FAF7F0] font-bold shadow-xs' 
-                          : 'text-textPrimary hover:bg-surface-muted'
-                      }`}
-                    >
-                      {opt.label}
-                    </button>
-                  ))}
+                  {categoryOptions.map((opt) => {
+                    const isSelected = category === opt.value;
+                    return (
+                      <button
+                        key={opt.value}
+                        onClick={() => {
+                          setCategory(opt.value);
+                          updateFilters({ category: opt.value });
+                          setMobileFiltersOpen(false);
+                        }}
+                        className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-mono-tag uppercase tracking-wider text-left transition-all ${
+                          isSelected 
+                            ? 'bg-[#D94E34] text-[#FFF8E7] font-bold shadow-xs' 
+                            : 'text-textPrimary hover:bg-surface-muted'
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
