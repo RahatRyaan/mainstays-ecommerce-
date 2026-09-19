@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { 
   CreditCard, 
@@ -7,11 +7,14 @@ import {
   Sparkles, 
   Lock, 
   DollarSign, 
-  ChevronRight
+  ChevronRight,
+  Plus,
+  Edit3
 } from 'lucide-react';
 import { useCartStore } from '../../store/cartStore';
 import { useAuthStore } from '../../store/authStore';
 import { useToastStore } from '../../store/toastStore';
+import { usePaymentStore, formatCardNumber, detectCardBrand } from '../../store/paymentStore';
 import apiClient from '../../api/client';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
@@ -23,10 +26,15 @@ const Checkout = () => {
   const { user } = useAuthStore();
   const addToast = useToastStore((state) => state.addToast);
   const navigate = useNavigate();
+  const { cards, addCard, updateCard } = usePaymentStore();
 
   const [loading, setLoading] = useState(false);
   const [shippingMethod, setShippingMethod] = useState<'standard' | 'express' | 'overnight'>('standard');
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'cod'>('card');
+  const [selectedCardId, setSelectedCardId] = useState<string>('');
+  const [isAddingNewCard, setIsAddingNewCard] = useState(false);
+  const [isEditingSelectedCard, setIsEditingSelectedCard] = useState(false);
+  const [saveNewCard, setSaveNewCard] = useState(true);
 
   // Address form fields
   const [formData, setFormData] = useState({
@@ -42,13 +50,45 @@ const Checkout = () => {
     country: 'United States',
   });
 
-  // Mock Card fields
+  // Card input fields
   const [cardData, setCardData] = useState({
     cardNumber: '•••• •••• •••• 4242',
     cardHolder: user?.name || 'Alex Johnson',
     expiry: '12/28',
     cvv: '888',
   });
+
+  // Initialize selected card from store
+  useEffect(() => {
+    if (cards.length > 0) {
+      const defaultCard = cards.find((c) => c.isDefault) || cards[0];
+      setSelectedCardId(defaultCard.id);
+      setCardData({
+        cardNumber: defaultCard.cardNumber,
+        cardHolder: defaultCard.cardHolder,
+        expiry: defaultCard.expiry,
+        cvv: '888',
+      });
+      setIsAddingNewCard(false);
+    } else {
+      setIsAddingNewCard(true);
+    }
+  }, [cards]);
+
+  const handleSelectCard = (id: string) => {
+    setSelectedCardId(id);
+    setIsAddingNewCard(false);
+    setIsEditingSelectedCard(false);
+    const card = cards.find((c) => c.id === id);
+    if (card) {
+      setCardData({
+        cardNumber: card.cardNumber,
+        cardHolder: card.cardHolder,
+        expiry: card.expiry,
+        cvv: '888',
+      });
+    }
+  };
 
   const subtotal = getCartSubtotal();
   const discount = getDiscountAmount();
@@ -106,6 +146,26 @@ const Checkout = () => {
     setLoading(true);
 
     const fullShippingAddress = `${formData.street}, ${formData.apartment ? formData.apartment + ', ' : ''}${formData.city}, ${formData.state} ${formData.zip}, ${formData.country}`;
+
+    if (paymentMethod === 'card') {
+      if (isAddingNewCard && saveNewCard && cardData.cardNumber) {
+        addCard({
+          cardHolder: cardData.cardHolder || user?.name || 'Cardholder',
+          cardNumber: cardData.cardNumber,
+          expiry: cardData.expiry || '12/28',
+          brand: detectCardBrand(cardData.cardNumber),
+          isDefault: cards.length === 0,
+          nickname: `Card ending in ${cardData.cardNumber.replace(/\D/g, '').slice(-4) || '4242'}`,
+          billingAddress: `${formData.street}, ${formData.city}`,
+        });
+      } else if (isEditingSelectedCard && selectedCardId) {
+        updateCard(selectedCardId, {
+          cardHolder: cardData.cardHolder,
+          cardNumber: cardData.cardNumber,
+          expiry: cardData.expiry,
+        });
+      }
+    }
 
     // Group items by vendor for backend schema
     const vendorMap = new Map<string, any[]>();
@@ -428,47 +488,174 @@ const Checkout = () => {
             </div>
 
             {paymentMethod === 'card' && (
-              <div className="space-y-4 pt-2">
+              <div className="space-y-6 pt-2">
+                {/* Saved Cards Selection */}
+                {cards.length > 0 && (
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between text-xs font-mono-tag">
+                      <span className="font-bold uppercase tracking-wider text-textMuted">Choose Saved Card</span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsAddingNewCard(true);
+                          setIsEditingSelectedCard(false);
+                          setCardData({
+                            cardNumber: '',
+                            cardHolder: user?.name || 'Alex Johnson',
+                            expiry: '12/28',
+                            cvv: '',
+                          });
+                        }}
+                        className="text-[#D94E34] hover:underline font-bold flex items-center gap-1 cursor-pointer"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>Use Another Card</span>
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {cards.map((card) => {
+                        const isSelected = !isAddingNewCard && selectedCardId === card.id;
+                        return (
+                          <div
+                            key={card.id}
+                            onClick={() => handleSelectCard(card.id)}
+                            className={`p-4 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between gap-3 ${
+                              isSelected
+                                ? 'border-[#D94E34] bg-[#FFF8E7]/40 dark:bg-[#2C2719]/30 shadow-xs'
+                                : 'border-border/80 bg-surface hover:bg-surface-muted'
+                            }`}
+                          >
+                            <div className="flex items-start justify-between">
+                              <div className="flex items-center gap-2.5">
+                                <input
+                                  type="radio"
+                                  name="selectedCard"
+                                  checked={isSelected}
+                                  onChange={() => handleSelectCard(card.id)}
+                                  className="accent-[#D94E34] w-4 h-4"
+                                />
+                                <div>
+                                  <div className="font-serif font-bold text-sm text-textPrimary capitalize">
+                                    {card.nickname || `${card.brand.toUpperCase()} •••• ${card.last4}`}
+                                  </div>
+                                  <div className="text-[11px] font-mono-tag text-textMuted">
+                                    {card.cardNumber}
+                                  </div>
+                                </div>
+                              </div>
+                              <span className="text-[10px] font-mono-tag font-bold uppercase px-2 py-0.5 rounded-full bg-surface-muted text-textMuted border border-border/60">
+                                {card.brand.toUpperCase()}
+                              </span>
+                            </div>
+
+                            <div className="flex items-center justify-between text-[11px] font-mono-tag text-textMuted pt-2 border-t border-border/50">
+                              <span>Exp: {card.expiry}</span>
+                              {isSelected && (
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setIsEditingSelectedCard(!isEditingSelectedCard);
+                                  }}
+                                  className="text-[#D94E34] font-bold flex items-center gap-1 hover:underline cursor-pointer"
+                                >
+                                  <Edit3 className="w-3 h-3" />
+                                  <span>{isEditingSelectedCard ? 'Hide Edit' : 'Edit Card'}</span>
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Visual Card Preview */}
                 <div className="p-5 rounded-3xl bg-gradient-to-br from-[#A83D24] to-[#D94E34] text-[#FFF8E7] space-y-4 shadow-editorial max-w-sm mx-auto border border-[#E88C78]">
                   <div className="flex justify-between items-center text-[10px] font-mono-tag text-[#FFE4DC]">
                     <span>MAINSTAYS SECURE PAYMENT</span>
                     <Lock className="w-3.5 h-3.5 text-[#FFF8E7]" />
                   </div>
-                  <div className="font-mono-tag text-lg tracking-widest">{cardData.cardNumber}</div>
+                  <div className="font-mono-tag text-lg tracking-widest font-bold">
+                    {cardData.cardNumber || '•••• •••• •••• 4242'}
+                  </div>
                   <div className="flex justify-between text-xs font-mono-tag">
                     <div>
-                      <div className="text-[9px] text-[#FFE4DC]">CARDHOLDER</div>
-                      <div>{cardData.cardHolder}</div>
+                      <div className="text-[9px] text-[#FFE4DC] uppercase tracking-wider">CARDHOLDER</div>
+                      <div className="font-semibold">{cardData.cardHolder || 'CARDHOLDER'}</div>
                     </div>
                     <div>
-                      <div className="text-[9px] text-[#FFE4DC]">EXPIRES</div>
-                      <div>{cardData.expiry}</div>
+                      <div className="text-[9px] text-[#FFE4DC] uppercase tracking-wider">EXPIRES</div>
+                      <div className="font-semibold">{cardData.expiry || 'MM/YY'}</div>
                     </div>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <Input
-                    label="Card Number"
-                    value={cardData.cardNumber}
-                    onChange={(e) => setCardData({ ...cardData, cardNumber: e.target.value })}
-                  />
-                  <Input
-                    label="Cardholder Name"
-                    value={cardData.cardHolder}
-                    onChange={(e) => setCardData({ ...cardData, cardHolder: e.target.value })}
-                  />
-                  <Input
-                    label="Expiration Date (MM/YY)"
-                    value={cardData.expiry}
-                    onChange={(e) => setCardData({ ...cardData, expiry: e.target.value })}
-                  />
-                  <Input
-                    label="Security Code (CVV)"
-                    value={cardData.cvv}
-                    onChange={(e) => setCardData({ ...cardData, cvv: e.target.value })}
-                  />
-                </div>
+                {/* Form fields for New Card or Editing Card */}
+                {(isAddingNewCard || isEditingSelectedCard || cards.length === 0) && (
+                  <div className="space-y-4 p-5 rounded-2xl bg-surface-muted/30 border border-border/70">
+                    <div className="flex items-center justify-between text-xs font-mono-tag font-bold uppercase tracking-wider text-textPrimary pb-2 border-b border-border/60">
+                      <span>{isEditingSelectedCard ? 'Edit Current Card Details' : 'Enter New Card Credentials'}</span>
+                      {isAddingNewCard && cards.length > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const first = cards[0];
+                            handleSelectCard(first.id);
+                          }}
+                          className="text-textMuted hover:text-[#D94E34] text-[11px] font-normal cursor-pointer"
+                        >
+                          Cancel & Use Saved Card
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <Input
+                        label="Card Number"
+                        required
+                        value={cardData.cardNumber}
+                        onChange={(e) => setCardData({ ...cardData, cardNumber: formatCardNumber(e.target.value) })}
+                        placeholder="4242 •••• •••• 4242"
+                      />
+                      <Input
+                        label="Cardholder Name"
+                        required
+                        value={cardData.cardHolder}
+                        onChange={(e) => setCardData({ ...cardData, cardHolder: e.target.value })}
+                        placeholder="Alex Johnson"
+                      />
+                      <Input
+                        label="Expiration Date (MM/YY)"
+                        required
+                        value={cardData.expiry}
+                        onChange={(e) => setCardData({ ...cardData, expiry: e.target.value })}
+                        placeholder="12/28"
+                      />
+                      <Input
+                        label="Security Code (CVV)"
+                        required
+                        value={cardData.cvv}
+                        onChange={(e) => setCardData({ ...cardData, cvv: e.target.value })}
+                        placeholder="888"
+                      />
+                    </div>
+
+                    {isAddingNewCard && (
+                      <label className="flex items-center gap-2.5 text-xs font-mono-tag text-textPrimary cursor-pointer pt-1">
+                        <input
+                          type="checkbox"
+                          checked={saveNewCard}
+                          onChange={(e) => setSaveNewCard(e.target.checked)}
+                          className="accent-[#D94E34] w-4 h-4 rounded"
+                        />
+                        <span>Save this card securely to my account for future orders</span>
+                      </label>
+                    )}
+                  </div>
+                )}
               </div>
             )}
           </div>
