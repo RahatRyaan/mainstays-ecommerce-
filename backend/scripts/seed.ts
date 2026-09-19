@@ -13,16 +13,10 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const seed = async () => {
   try {
-    let mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/ecommerce';
-    console.log(`Connecting to database: ${mongoUri}...`);
-    try {
-      await mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 3000 });
-    } catch (connErr) {
-      console.log('Direct connection failed, trying localhost fallback...');
-      mongoUri = 'mongodb://127.0.0.1:27017/ecommerce';
-      await mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 4000 });
-    }
-    console.log(`Connected to MongoDB at ${mongoUri}`);
+    const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/ecommerce';
+    console.log(`Connecting to database...`);
+    await mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 15000 });
+    console.log(`Connected successfully to MongoDB Atlas!`);
 
     // Clear existing data
     console.log('Clearing old data...');
