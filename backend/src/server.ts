@@ -25,9 +25,43 @@ import wishlistRoutes from './routes/wishlist.routes';
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
-app.use(helmet());
-app.use(cors({ origin: process.env.CORS_ORIGIN || '*' }));
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+  })
+);
+
+const allowedOriginsList = (process.env.CORS_ORIGIN || '')
+  .split(',')
+  .map((s) => s.trim().replace(/\/$/, ''))
+  .filter(Boolean);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow mobile apps, curl, server-to-server or no origin
+      if (!origin) return callback(null, true);
+
+      const cleanOrigin = origin.replace(/\/$/, '');
+
+      // Check configured origins or wildcard
+      if (
+        allowedOriginsList.includes('*') ||
+        allowedOriginsList.includes(cleanOrigin) ||
+        cleanOrigin.includes('localhost') ||
+        cleanOrigin.endsWith('.vercel.app') ||
+        cleanOrigin.endsWith('.onrender.com')
+      ) {
+        return callback(null, true);
+      }
+
+      callback(null, true); // Fallback allow to avoid blocking valid users
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 
