@@ -14,11 +14,17 @@ export class ProductController {
       const filter: any = { isActive: true };
       if (category) filter.category = category;
 
-      const products = await ProductService.getProducts(filter, skip, limit);
       const result = await ProductService.searchProducts(req.query);
-      res.json({ success: true, data: result });
+      res.json({
+        success: true,
+        data: result,
+        products: result.products,
+        total: result.total,
+        page: result.page,
+        pages: result.pages,
+      });
     } catch (error: any) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ success: false, message: error.message });
     }
   }
 

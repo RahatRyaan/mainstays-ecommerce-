@@ -62,7 +62,7 @@ const ProductListing = () => {
       params.append('limit', '40');
 
       const response = await apiClient.get('/products', { params });
-      const list = response.data?.data?.products || response.data?.products || [];
+      const list = response.data?.products || response.data?.data?.products || (Array.isArray(response.data?.data) ? response.data.data : []) || [];
       setProducts(list);
     } catch (error) {
       console.error('Failed to fetch products', error);
@@ -99,10 +99,10 @@ const ProductListing = () => {
   const categoryOptions = [
     { label: 'All Catalog Goods', value: '' },
     { label: 'Electronics & Audio', value: 'Electronics' },
-    { label: 'Everyday Apparel & Fashion', value: 'Fashion' },
-    { label: 'Kids & Nursery', value: 'Kids' },
+    { label: 'Everyday Apparel', value: 'Fashion' },
     { label: 'Home & Living', value: 'Home' },
-    { label: 'Apothecary & Care', value: 'Beauty' },
+    { label: 'Beauty & Skincare', value: 'Beauty' },
+    { label: 'Kids & Play', value: 'Kids' },
   ];
 
   const priceOptions = [
@@ -114,7 +114,7 @@ const ProductListing = () => {
   ];
 
   const sortOptions = [
-    { label: 'Newest Arrivals', value: 'newest' },
+    { label: 'Newest Releases', value: 'newest' },
     { label: 'Price: Low to High', value: 'price_asc' },
     { label: 'Price: High to Low', value: 'price_desc' },
     { label: 'Highest Rated', value: 'rating_desc' },
@@ -123,16 +123,16 @@ const ProductListing = () => {
   const hasActiveFilters = Boolean(search || category || priceRange);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-12">
       
       {/* Header & Search Bar */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 pb-6 border-b border-border/80">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 sm:mb-8 pb-4 sm:pb-6 border-b border-border/80">
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFF8E7] text-[#9E6D08] border border-[#EBD69D] dark:bg-[#2C2719] dark:text-[#E8C564] dark:border-[#4F4422] text-[10px] font-mono-tag font-bold uppercase tracking-wider mb-2">
             <Sparkles className="w-3 h-3 text-[#E59819]" />
             <span>Curated Catalog</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-serif font-black text-textPrimary tracking-tight">
+          <h1 className="text-2xl sm:text-4xl font-serif font-black text-textPrimary tracking-tight">
             {category ? `${category} Collection` : 'All Mainstays Goods'}
           </h1>
           <p className="text-xs font-mono-tag text-textMuted mt-1">
@@ -141,43 +141,43 @@ const ProductListing = () => {
         </div>
 
         {/* Search & Mobile Filter Toggle */}
-        <div className="flex items-center gap-3 w-full md:w-auto">
+        <div className="flex items-center gap-2 sm:gap-3 w-full md:w-auto">
           <div className="relative flex-1 md:w-80">
             <input
               type="text"
-              placeholder="Search staples, materials, keywords..."
+              placeholder="Search staples, keywords..."
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
                 updateFilters({ search: e.target.value });
               }}
-              className="w-full bg-surface border border-border/80 rounded-full pl-9 pr-9 py-2.5 text-xs font-mono-tag text-textPrimary placeholder:text-textMuted focus:outline-none focus:ring-2 focus:ring-[#D94E34]/30 focus:border-[#D94E34] transition-all shadow-2xs"
+              className="w-full bg-surface border border-border/80 rounded-full pl-8 pr-8 py-2 sm:py-2.5 text-xs font-mono-tag text-textPrimary placeholder:text-textMuted focus:outline-none focus:ring-2 focus:ring-[#D94E34]/30 focus:border-[#D94E34] transition-all shadow-2xs"
             />
-            <Search className="w-4 h-4 text-textMuted absolute left-3 top-3 pointer-events-none" />
+            <Search className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-textMuted absolute left-3 top-2.5 sm:top-3 pointer-events-none" />
             {search && (
               <button
                 onClick={() => {
                   setSearch('');
                   updateFilters({ search: '' });
                 }}
-                className="absolute right-3 top-2.5 text-textMuted hover:text-textPrimary cursor-pointer"
+                className="absolute right-3 top-2 sm:top-2.5 text-textMuted hover:text-textPrimary cursor-pointer"
               >
-                <X className="w-4 h-4" />
+                <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
             )}
           </div>
 
           <button
             onClick={() => setMobileFiltersOpen(true)}
-            className="lg:hidden flex items-center gap-2 px-4 py-2.5 bg-surface border border-border/80 rounded-full text-xs font-mono-tag font-bold uppercase tracking-wider text-textPrimary hover:bg-surface-muted"
+            className="lg:hidden flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 bg-surface border border-border/80 rounded-full text-xs font-mono-tag font-bold uppercase tracking-wider text-textPrimary hover:bg-surface-muted cursor-pointer"
           >
-            <SlidersHorizontal className="w-4 h-4 text-[#D94E34]" />
+            <SlidersHorizontal className="w-3.5 h-3.5 text-[#D94E34]" />
             <span>Filters</span>
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
         
         {/* Desktop Sidebar Filters */}
         <aside className="hidden lg:block lg:col-span-3 sticky top-28 space-y-6 bg-surface border border-border/80 rounded-3xl p-6 shadow-xs">
@@ -219,7 +219,7 @@ const ProductListing = () => {
                     }`}
                   >
                     <span>{opt.label}</span>
-                    {isSelected && <Sparkles className="w-3.5 h-3.5 text-[#FFF8E7]" />}
+                    {isSelected && <Sparkles className="w-3.5 h-3.5" />}
                   </button>
                 );
               })}
@@ -232,35 +232,35 @@ const ProductListing = () => {
               Price Range
             </label>
             <div className="space-y-1.5">
-              {priceOptions.map((opt) => {
-                const isSelected = priceRange === opt.value;
+              {priceOptions.map((p) => {
+                const isSelected = priceRange === p.value;
                 return (
                   <button
-                    key={opt.value}
+                    key={p.value}
                     onClick={() => {
-                      setPriceRange(opt.value);
-                      updateFilters({ priceRange: opt.value });
+                      setPriceRange(p.value);
+                      updateFilters({ priceRange: p.value });
                     }}
-                    className={`w-full flex items-center justify-between px-3.5 py-2 rounded-2xl text-xs font-mono-tag uppercase tracking-wider transition-all text-left cursor-pointer ${
+                    className={`w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-mono-tag tracking-wider transition-all text-left cursor-pointer ${
                       isSelected
-                        ? 'bg-[#D94E34] text-[#FFF8E7] font-bold shadow-xs'
+                        ? 'bg-[#D94E34] text-[#FFF8E7] font-bold shadow-2xs'
                         : 'text-textPrimary hover:bg-surface-muted hover:text-[#D94E34]'
                     }`}
                   >
-                    <span>{opt.label}</span>
+                    <span>{p.label}</span>
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* Promo Callout Stamp (Warm Butter Cream & Amber Tone) */}
-          <div className="p-4 rounded-2xl bg-[#FFF9E6] border border-[#EBD69D] space-y-1.5 shadow-2xs">
-            <div className="text-xs font-mono-tag font-bold text-[#873523] flex items-center gap-1.5">
+          {/* Promo Tag Box */}
+          <div className="p-4 rounded-2xl bg-[#FFF8E7] dark:bg-[#2C2719] border border-[#EBD69D] dark:border-[#4F4422] space-y-1.5">
+            <div className="flex items-center gap-1.5 text-xs font-mono-tag font-bold text-[#9E6D08] dark:text-[#E8C564] uppercase tracking-wider">
               <Sparkles className="w-3.5 h-3.5 text-[#D94E34]" /> 10% Off Your Order
             </div>
-            <div className="text-[11px] font-mono-tag text-[#5C554D] leading-relaxed">
-              Use promo code <strong className="text-[#873523] font-bold underline decoration-[#D94E34]">WELCOME10</strong> at checkout!
+            <div className="text-[11px] font-mono-tag text-[#5C554D] dark:text-[#C5BEB5] leading-relaxed">
+              Use promo code <strong className="text-[#873523] dark:text-[#E8A598] font-bold underline decoration-[#D94E34]">WELCOME10</strong> at checkout!
             </div>
           </div>
         </aside>
@@ -269,12 +269,12 @@ const ProductListing = () => {
         <div className="lg:col-span-9 space-y-6">
           
           {/* Sorting & Active Filters Summary Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 bg-surface border border-border/80 p-4 rounded-3xl shadow-xs">
+          <div className="flex flex-wrap items-center justify-between gap-3 bg-surface border border-border/80 p-3 sm:p-4 rounded-2xl sm:rounded-3xl shadow-xs">
             {/* Active Pills */}
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-mono-tag text-textMuted">Applied:</span>
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+              <span className="text-[11px] sm:text-xs font-mono-tag text-textMuted">Applied:</span>
               {category ? (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#D94E34] text-[#FFF8E7] text-[11px] font-mono-tag font-bold shadow-2xs">
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#D94E34] text-[#FFF8E7] text-[10px] sm:text-[11px] font-mono-tag font-bold shadow-2xs">
                   {category}
                   <button onClick={() => { setCategory(''); updateFilters({ category: '' }); }} className="cursor-pointer">
                     <X className="w-3 h-3 hover:text-[#FFF8E7]/80" />
@@ -282,7 +282,7 @@ const ProductListing = () => {
                 </span>
               ) : null}
               {priceRange ? (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#D94E34] text-[#FFF8E7] text-[11px] font-mono-tag font-bold">
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#D94E34] text-[#FFF8E7] text-[10px] sm:text-[11px] font-mono-tag font-bold">
                   {priceOptions.find(p => p.value === priceRange)?.label}
                   <button onClick={() => { setPriceRange(''); updateFilters({ priceRange: '' }); }} className="cursor-pointer">
                     <X className="w-3 h-3 hover:text-white" />
@@ -290,7 +290,7 @@ const ProductListing = () => {
                 </span>
               ) : null}
               {search ? (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-muted text-textPrimary border border-border text-[11px] font-mono-tag font-bold">
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-muted text-textPrimary border border-border text-[10px] sm:text-[11px] font-mono-tag font-bold">
                   "{search}"
                   <button onClick={() => { setSearch(''); updateFilters({ search: '' }); }} className="cursor-pointer">
                     <X className="w-3 h-3 hover:text-[#D94E34]" />
@@ -298,13 +298,13 @@ const ProductListing = () => {
                 </span>
               ) : null}
               {!hasActiveFilters && (
-                <span className="text-xs font-mono-tag text-textMuted italic">All categories selected</span>
+                <span className="text-[11px] sm:text-xs font-mono-tag text-textMuted italic">All categories</span>
               )}
             </div>
 
             {/* Sort Selector */}
             <div className="flex items-center gap-2 ml-auto">
-              <span className="text-xs font-mono-tag text-textMuted whitespace-nowrap">Sort:</span>
+              <span className="text-[11px] sm:text-xs font-mono-tag text-textMuted whitespace-nowrap">Sort:</span>
               <div className="relative">
                 <select
                   value={sort}
@@ -312,35 +312,35 @@ const ProductListing = () => {
                     setSort(e.target.value);
                     updateFilters({ sort: e.target.value });
                   }}
-                  className="appearance-none bg-surface-muted border border-border/80 rounded-full pl-3 pr-8 py-1.5 text-xs font-mono-tag font-bold uppercase tracking-wider text-textPrimary focus:outline-none focus:ring-2 focus:ring-[#D94E34] cursor-pointer"
+                  className="appearance-none bg-surface-muted border border-border/80 rounded-full pl-2.5 pr-7 py-1 text-[11px] sm:text-xs font-mono-tag font-bold uppercase tracking-wider text-textPrimary focus:outline-none focus:ring-2 focus:ring-[#D94E34] cursor-pointer"
                 >
                   {sortOptions.map((s) => (
                     <option key={s.value} value={s.value}>{s.label}</option>
                   ))}
                 </select>
-                <ChevronDown className="w-3.5 h-3.5 text-textMuted absolute right-2.5 top-2.5 pointer-events-none" />
+                <ChevronDown className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-textMuted absolute right-2 top-2 pointer-events-none" />
               </div>
             </div>
           </div>
 
           {/* Product Cards Grid */}
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-3 sm:gap-6">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="bg-surface border border-border/60 rounded-3xl p-4 animate-pulse space-y-4">
-                  <div className="aspect-square bg-surface-muted rounded-2xl"></div>
-                  <div className="h-4 bg-surface-muted rounded w-3/4"></div>
-                  <div className="h-4 bg-surface-muted rounded w-1/2"></div>
-                  <div className="h-8 bg-surface-muted rounded-xl"></div>
+                <div key={i} className="bg-surface border border-border/60 rounded-2xl p-3 sm:p-4 animate-pulse space-y-3">
+                  <div className="aspect-square bg-surface-muted rounded-xl"></div>
+                  <div className="h-3 bg-surface-muted rounded w-3/4"></div>
+                  <div className="h-3 bg-surface-muted rounded w-1/2"></div>
+                  <div className="h-6 bg-surface-muted rounded-lg"></div>
                 </div>
               ))}
             </div>
           ) : products.length === 0 ? (
-            <div className="text-center py-20 bg-surface rounded-3xl border border-border/80 p-8 space-y-4">
-              <div className="w-16 h-16 rounded-full bg-[#FFF8E7] dark:bg-[#2C2719] flex items-center justify-center mx-auto text-[#9E6D08]">
-                <Search className="w-8 h-8" />
+            <div className="text-center py-16 sm:py-20 bg-surface rounded-3xl border border-border/80 p-6 sm:p-8 space-y-4">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#FFF8E7] dark:bg-[#2C2719] flex items-center justify-center mx-auto text-[#9E6D08]">
+                <Search className="w-7 h-7 sm:w-8 sm:h-8" />
               </div>
-              <h3 className="text-2xl font-serif font-black text-textPrimary">
+              <h3 className="text-xl sm:text-2xl font-serif font-black text-textPrimary">
                 No matching staples found
               </h3>
               <p className="text-xs font-mono-tag text-textMuted max-w-md mx-auto">
@@ -351,7 +351,7 @@ const ProductListing = () => {
               </Button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-3 sm:gap-6">
               {products.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}

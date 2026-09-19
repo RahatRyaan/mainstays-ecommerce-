@@ -162,19 +162,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
         </div>
 
         {/* Product Details */}
-        <div className="p-4 sm:p-5 flex flex-col flex-1">
-          <div className="text-[11px] font-mono-tag text-textMuted uppercase tracking-wider mb-1 truncate">
+        <div className="p-3 sm:p-5 flex flex-col flex-1">
+          <div className="text-[9px] sm:text-[11px] font-mono-tag text-textMuted uppercase tracking-wider mb-0.5 sm:mb-1 truncate">
             {vendorName}
           </div>
 
-          <h3 className="font-serif font-bold text-textPrimary text-base leading-snug line-clamp-2 group-hover:text-brand transition-colors mb-2">
+          <h3 className="font-serif font-bold text-textPrimary text-xs sm:text-base leading-snug line-clamp-2 group-hover:text-brand transition-colors mb-1.5 sm:mb-2">
             {product.name}
           </h3>
 
           {/* Rating */}
-          <div className="flex items-center gap-1.5 mb-2 text-xs">
+          <div className="flex items-center gap-1 sm:gap-1.5 mb-1.5 sm:mb-2 text-[10px] sm:text-xs">
             <div className="flex items-center text-[#E59819]">
-              <Star className="w-3.5 h-3.5 fill-current" />
+              <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current" />
             </div>
             <span className="font-bold text-textPrimary">
               {product.averageRating ? product.averageRating.toFixed(1) : '4.9'}
@@ -187,10 +187,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
       </Link>
 
       {/* Price & Quick Add Action Row */}
-      <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-0 flex items-center justify-between mt-auto border-t border-border/40 pt-3">
+      <div className="px-3 pb-3 sm:px-5 sm:pb-5 pt-0 flex items-center justify-between mt-auto border-t border-border/40 pt-2 sm:pt-3">
         <div>
-          <span className="text-[10px] font-mono-tag uppercase tracking-wider text-textMuted block">Price</span>
-          <div className="text-lg font-mono-tag font-bold text-textPrimary tracking-tight">
+          <span className="text-[8px] sm:text-[10px] font-mono-tag uppercase tracking-wider text-textMuted block">Price</span>
+          <div className="text-xs sm:text-lg font-mono-tag font-bold text-textPrimary tracking-tight">
             ${product.basePrice.toFixed(2)}
           </div>
         </div>
@@ -201,7 +201,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
           transition={{ type: 'spring', stiffness: 450, damping: 25 }}
           onClick={handleQuickAdd}
           disabled={isOutOfStock}
-          className={`flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl font-mono-tag font-bold text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+          className={`flex items-center justify-center gap-1 px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-lg sm:rounded-xl font-mono-tag font-bold text-[10px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
             isOutOfStock
               ? 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-500'
               : added
@@ -212,12 +212,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
         >
           {added ? (
             <>
-              <Check className="w-3.5 h-3.5" />
+              <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
               <span>Added</span>
             </>
           ) : (
             <>
-              <ShoppingCart className="w-3.5 h-3.5" />
+              <ShoppingCart className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
               <span>Add</span>
             </>
           )}

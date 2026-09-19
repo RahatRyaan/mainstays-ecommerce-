@@ -13,7 +13,10 @@ import {
   Store, 
   Sparkles,
   Search,
-  Heart
+  Heart,
+  Home,
+  Compass,
+  User
 } from 'lucide-react';
 import { ToastContainer } from '../components/ui/ToastContainer';
 import ThemeToggle from '../components/ThemeToggle';
@@ -465,6 +468,73 @@ const CustomerLayout = () => {
           </div>
         </div>
       </footer>
+
+      {/* Sleek Mobile Bottom Navigation Bar (Visible only on mobile devices) */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-surface/95 backdrop-blur-lg border-t border-border/80 px-2 py-2 flex items-center justify-around shadow-2xl transition-all">
+        <Link
+          to="/"
+          className={`flex flex-col items-center gap-1 px-3 py-1 rounded-xl text-[10px] font-mono-tag uppercase tracking-wider transition-colors ${
+            location.pathname === '/' ? 'text-[#D94E34] font-bold' : 'text-textMuted hover:text-textPrimary'
+          }`}
+        >
+          <Home className="w-5 h-5" />
+          <span>Home</span>
+        </Link>
+
+        <Link
+          to="/products"
+          className={`flex flex-col items-center gap-1 px-3 py-1 rounded-xl text-[10px] font-mono-tag uppercase tracking-wider transition-colors ${
+            location.pathname.startsWith('/products') ? 'text-[#D94E34] font-bold' : 'text-textMuted hover:text-textPrimary'
+          }`}
+        >
+          <Compass className="w-5 h-5" />
+          <span>Shop</span>
+        </Link>
+
+        <Link
+          to="/wishlist"
+          className={`relative flex flex-col items-center gap-1 px-3 py-1 rounded-xl text-[10px] font-mono-tag uppercase tracking-wider transition-colors ${
+            location.pathname === '/wishlist' ? 'text-[#D94E34] font-bold' : 'text-textMuted hover:text-textPrimary'
+          }`}
+        >
+          <div className="relative">
+            <Heart className="w-5 h-5" />
+            {wishlistCount > 0 && (
+              <span className="absolute -top-1 -right-2.5 w-4 h-4 rounded-full bg-[#D94E34] text-[#FFF8E7] text-[9px] font-bold flex items-center justify-center">
+                {wishlistCount}
+              </span>
+            )}
+          </div>
+          <span>Saved</span>
+        </Link>
+
+        <Link
+          to="/cart"
+          className={`relative flex flex-col items-center gap-1 px-3 py-1 rounded-xl text-[10px] font-mono-tag uppercase tracking-wider transition-colors ${
+            location.pathname === '/cart' ? 'text-[#D94E34] font-bold' : 'text-textMuted hover:text-textPrimary'
+          }`}
+        >
+          <div className="relative">
+            <ShoppingCart className="w-5 h-5" />
+            {itemCount > 0 && (
+              <span className="absolute -top-1 -right-2.5 w-4 h-4 rounded-full bg-[#D94E34] text-[#FFF8E7] text-[9px] font-bold flex items-center justify-center">
+                {itemCount}
+              </span>
+            )}
+          </div>
+          <span>Bag</span>
+        </Link>
+
+        <Link
+          to={token ? '/account/settings' : '/login'}
+          className={`flex flex-col items-center gap-1 px-3 py-1 rounded-xl text-[10px] font-mono-tag uppercase tracking-wider transition-colors ${
+            location.pathname.startsWith('/account') || location.pathname === '/login' ? 'text-[#D94E34] font-bold' : 'text-textMuted hover:text-textPrimary'
+          }`}
+        >
+          <User className="w-5 h-5" />
+          <span>{token ? 'Account' : 'Sign In'}</span>
+        </Link>
+      </nav>
     </div>
   );
 };
