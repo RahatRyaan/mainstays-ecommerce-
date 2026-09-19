@@ -15,6 +15,10 @@ export class ProductController {
       if (category) filter.category = category;
 
       const result = await ProductService.searchProducts(req.query);
+      
+      // Enable HTTP Edge and Browser Caching (1 min fresh, 5 mins stale-while-revalidate)
+      res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
+      
       res.json({
         success: true,
         data: result,
@@ -40,6 +44,8 @@ export class ProductController {
         return res.status(404).json({ success: false, message: 'Product not found' });
       }
       const prodObj = (product as any).toObject ? (product as any).toObject() : product;
+      
+      res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
       res.json({ success: true, data: { product: prodObj }, ...prodObj });
     } catch (error: any) {
       res.status(500).json({ success: false, message: error.message });

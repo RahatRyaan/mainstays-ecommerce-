@@ -8,14 +8,15 @@ import {
   Sparkles,
   ChevronDown
 } from 'lucide-react';
-import apiClient from '../../api/client';
+import { useProductStore } from '../../store/productStore';
 import Button from '../../components/ui/Button';
 import { ProductCard, type ProductItem } from '../../components/ProductCard';
 
 const ProductListing = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState<ProductItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const fetchProductsWithCache = useProductStore((state) => state.fetchProductsWithCache);
   
   // Filter states initialized from URL params
   const [search, setSearch] = useState(searchParams.get('search') || '');
@@ -38,36 +39,36 @@ const ProductListing = () => {
   }, [searchParams]);
 
   const fetchProducts = async () => {
-    setLoading(true);
-    try {
-      const params = new URLSearchParams();
-      if (search.trim()) params.append('search', search.trim());
-      if (category && category !== 'All') params.append('category', category);
-      if (sort) params.append('sort', sort);
+    const params: Record<string, string | number> = {};
+    if (search.trim()) params.search = search.trim();
+    if (category && category !== 'All') params.category = category;
+    if (sort) params.sort = sort;
 
-      if (priceRange) {
-        if (priceRange === 'under-50') {
-          params.append('maxPrice', '50');
-        } else if (priceRange === '50-150') {
-          params.append('minPrice', '50');
-          params.append('maxPrice', '150');
-        } else if (priceRange === '150-300') {
-          params.append('minPrice', '150');
-          params.append('maxPrice', '300');
-        } else if (priceRange === '300-plus') {
-          params.append('minPrice', '300');
-        }
+    if (priceRange) {
+      if (priceRange === 'under-50') {
+        params.maxPrice = 50;
+      } else if (priceRange === '50-150') {
+        params.minPrice = 50;
+        params.maxPrice = 150;
+      } else if (priceRange === '150-300') {
+        params.minPrice = 150;
+        params.maxPrice = 300;
+      } else if (priceRange === '300-plus') {
+        params.minPrice = 300;
       }
+    }
 
-      params.append('limit', '40');
+    params.limit = 40;
 
-      const response = await apiClient.get('/products', { params });
-      const list = response.data?.products || response.data?.data?.products || (Array.isArray(response.data?.data) ? response.data.data : []) || [];
-      setProducts(list);
+    try {
+      const result = await fetchProductsWithCache(params);
+      setProducts(result.products);
+      if (!result.fromCache) {
+        setLoading(false);
+      }
     } catch (error) {
       console.error('Failed to fetch products', error);
       setProducts([]);
-    } finally {
       setLoading(false);
     }
   };

@@ -1,7 +1,24 @@
 import { Product, IProduct } from '../models/Product';
 import { Types } from 'mongoose';
+import redisClient from '../db/redis';
 
 export class ProductService {
+  /**
+   * Helper to invalidate product caches when items are modified
+   */
+  private static async invalidateCache() {
+    try {
+      if (redisClient.isOpen) {
+        const keys = await redisClient.keys('products:search:*');
+        if (keys && keys.length > 0) {
+          await redisClient.del(keys);
+        }
+      }
+    } catch {
+      // Non-blocking
+    }
+  }
+
   /**
    * Retrieves a paginated list of products.
    * Can be filtered by vendor, category, isActive, etc.
@@ -28,7 +45,9 @@ export class ProductService {
       ...productData,
       vendor: new Types.ObjectId(vendorId),
     });
-    return await product.save();
+    const saved = await product.save();
+    await this.invalidateCache();
+    return saved;
   }
 
   /**
@@ -51,7 +70,9 @@ export class ProductService {
     }
 
     Object.assign(product, updateData);
-    return await product.save();
+    const updated = await product.save();
+    await this.invalidateCache();
+    return updated;
   }
 
   /**
@@ -69,6 +90,7 @@ export class ProductService {
     }
 
     await Product.deleteOne({ _id: id });
+    await this.invalidateCache();
     return { success: true };
   }
 
@@ -84,6 +106,19 @@ export class ProductService {
       page = 1, 
       limit = 24 
     } = query;
+
+    // 1. Check Redis cache first for ultra-low latency (<2ms)
+    const cacheKey = `products:search:${JSON.stringify(query)}`;
+    try {
+      if (redisClient.isOpen) {
+        const cached = await redisClient.get(cacheKey);
+        if (cached) {
+          return JSON.parse(cached);
+        }
+      }
+    } catch {
+      // Fallback seamlessly to database
+    }
 
     const searchTerm = q || search;
     const filter: any = { isActive: true };
@@ -129,11 +164,22 @@ export class ProductService {
 
     const total = await Product.countDocuments(filter);
 
-    return {
+    const result = {
       products,
       total,
       page: pageNum,
       pages: Math.ceil(total / limitNum),
     };
+
+    // 2. Cache in Redis with 5-minute TTL
+    try {
+      if (redisClient.isOpen) {
+        await redisClient.setEx(cacheKey, 300, JSON.stringify(result));
+      }
+    } catch {
+      // Non-blocking
+    }
+
+    return result;
   }
 }

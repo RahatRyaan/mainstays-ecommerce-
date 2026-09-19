@@ -14,9 +14,9 @@ import {
   Heart,
   Smile
 } from 'lucide-react';
-import apiClient from '../../api/client';
 import { ProductCard, type ProductItem } from '../../components/ProductCard';
 import { useToastStore } from '../../store/toastStore';
+import { useProductStore } from '../../store/productStore';
 import MarqueeBanner from '../../components/ui/MarqueeBanner';
 
 interface Colorway {
@@ -181,11 +181,13 @@ const Home = () => {
   const [selectedKidAge, setSelectedKidAge] = useState<'all' | 'infant' | 'toddler' | 'junior'>('all');
   const addToast = useToastStore((state) => state.addToast);
 
+  const fetchProductsWithCache = useProductStore((state) => state.fetchProductsWithCache);
+
   useEffect(() => {
     const fetchHomeProducts = async () => {
       try {
-        const response = await apiClient.get('/products?limit=40');
-        const list: ProductItem[] = response.data?.data?.products || response.data?.products || [];
+        const result = await fetchProductsWithCache({ limit: 40 });
+        const list = result.products;
         setFeaturedProducts(list);
         setKidsProducts(list.filter((p) => p.category === 'Kids'));
       } catch (error) {

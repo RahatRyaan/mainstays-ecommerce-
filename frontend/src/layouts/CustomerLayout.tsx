@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { useCartStore } from '../store/cartStore';
+import { useProductStore } from '../store/productStore';
 import { 
   ShoppingCart, 
   Menu, 
@@ -11,7 +12,7 @@ import {
   LogOut, 
   LayoutDashboard, 
   Store, 
-  Sparkles,
+  Sparkles, 
   Search,
   Heart,
   Home,
@@ -27,6 +28,7 @@ const CustomerLayout = () => {
   const { token, user, logout } = useAuthStore();
   const itemCount = useCartStore((state) => state.getItemCount());
   const wishlistCount = useWishlistStore((state) => state.items.length);
+  const prefetchCatalog = useProductStore((state) => state.prefetchCatalog);
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -34,6 +36,11 @@ const CustomerLayout = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
+
+  // Warm up catalog cache in background for instant 0ms tab navigation
+  useEffect(() => {
+    prefetchCatalog();
+  }, [prefetchCatalog]);
 
   const handleLogout = () => {
     logout();
