@@ -52,7 +52,17 @@ app.use('/api', globalLimiter);
 // Setup Swagger API Docs
 setupSwagger(app);
 
-// Health Check
+// Welcome & Health Check
+app.get('/', (req, res) => {
+  res.status(200).json({
+    name: 'MAINSTAYS Atelier API',
+    status: 'online',
+    timestamp: new Date().toISOString(),
+    docs: '/api-docs',
+    health: '/health',
+  });
+});
+
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
 });
