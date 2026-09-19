@@ -356,20 +356,20 @@ const CustomerLayout = () => {
         <Outlet />
       </main>
 
-      {/* Editorial Refined Footer (Clean Light Surface on Light Mode, Sleek Dark on Dark Mode) */}
-      <footer className="bg-[#F5F1E8] text-[#2C2825] dark:bg-[#181614] dark:text-[#FAF7F0] border-t border-[#E5DDD0] dark:border-[#38342F] relative mt-16 overflow-hidden">
+      {/* Editorial Grounding Dark Footer (Distinct contrast from header and body) */}
+      <footer className="bg-[#181614] text-[#FAF7F0] border-t border-[#2C2723] relative mt-16 overflow-hidden">
         
         {/* Newsletter Strip */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-b border-[#E5DDD0] dark:border-[#38342F]">
-          <div className="bg-surface border border-border/80 rounded-2xl p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-b border-[#2C2723]">
+          <div className="bg-[#221F1C] border border-[#35302B] rounded-2xl p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-lg">
             <div className="space-y-1.5 text-center lg:text-left max-w-lg">
               <span className="inline-block px-3 py-0.5 rounded-full bg-[#D94E34] text-[#FFF8E7] text-[10px] font-mono-tag uppercase tracking-wider font-bold">
                 The Mainstays Dispatch
               </span>
-              <h3 className="font-serif font-bold text-xl sm:text-2xl text-textPrimary tracking-tight">
+              <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#FAF7F0] tracking-tight">
                 Join our table & get 10% off your first haul
               </h3>
-              <p className="text-xs font-mono-tag text-textMuted">
+              <p className="text-xs font-mono-tag text-[#A8A29E]">
                 Get early access to weekly small-batch drops, maker stories, and secret sales.
               </p>
             </div>
@@ -381,7 +381,7 @@ const CustomerLayout = () => {
                 placeholder="Enter your email address"
                 value={newsletterEmail}
                 onChange={(e) => setNewsletterEmail(e.target.value)}
-                className="w-full sm:w-72 bg-surface-muted border border-border/80 rounded-xl px-4 py-2.5 text-xs font-mono-tag text-textPrimary placeholder:text-textMuted focus:outline-none focus:ring-2 focus:ring-[#D94E34] transition-all"
+                className="w-full sm:w-72 bg-[#181614] border border-[#3D3732] rounded-xl px-4 py-2.5 text-xs font-mono-tag text-[#FAF7F0] placeholder:text-[#8C827A] focus:outline-none focus:ring-2 focus:ring-[#D94E34] focus:border-[#D94E34] transition-all"
               />
               <button
                 type="submit"
@@ -403,72 +403,72 @@ const CustomerLayout = () => {
                 <div className="w-8 h-8 rounded-full bg-[#D94E34] text-[#FFF8E7] flex items-center justify-center font-serif font-black text-base shadow-xs">
                   M
                 </div>
-                <span className="font-serif font-black text-xl text-textPrimary tracking-tight">
+                <span className="font-serif font-black text-xl text-[#FAF7F0] tracking-tight">
                   Mainstays
                 </span>
               </div>
-              <p className="text-xs font-sans text-textMuted leading-relaxed max-w-xs">
+              <p className="text-xs font-sans text-[#A8A29E] leading-relaxed max-w-xs">
                 Thoughtfully-sourced goods and curated essentials designed to elevate daily rituals.
               </p>
               
               <div className="pt-2 space-y-1.5">
-                <div className="text-[10px] font-mono-tag uppercase tracking-wider text-textMuted font-bold">Secure Checkout</div>
-                <div className="flex flex-wrap gap-1.5 text-[11px] font-mono-tag text-textPrimary">
-                  <span className="px-2 py-0.5 bg-surface border border-border/80 rounded-md">💳 Visa</span>
-                  <span className="px-2 py-0.5 bg-surface border border-border/80 rounded-md">💳 Mastercard</span>
-                  <span className="px-2 py-0.5 bg-surface border border-border/80 rounded-md">⚡ Stripe</span>
-                  <span className="px-2 py-0.5 bg-surface border border-border/80 rounded-md">🍎 Apple Pay</span>
+                <div className="text-[10px] font-mono-tag uppercase tracking-wider text-[#A8A29E] font-bold">Secure Checkout</div>
+                <div className="flex flex-wrap gap-1.5 text-[11px] font-mono-tag text-[#FAF7F0]">
+                  <span className="px-2 py-0.5 bg-[#221F1C] border border-[#35302B] rounded-md">💳 Visa</span>
+                  <span className="px-2 py-0.5 bg-[#221F1C] border border-[#35302B] rounded-md">💳 Mastercard</span>
+                  <span className="px-2 py-0.5 bg-[#221F1C] border border-[#35302B] rounded-md">⚡ Stripe</span>
+                  <span className="px-2 py-0.5 bg-[#221F1C] border border-[#35302B] rounded-md">🍎 Apple Pay</span>
                 </div>
               </div>
             </div>
 
             {/* Column 2: Categories */}
             <div>
-              <h4 className="font-mono-tag font-bold text-xs text-textPrimary uppercase tracking-wider mb-3">Curated Shops</h4>
-              <ul className="space-y-2 text-xs font-mono-tag text-textMuted">
-                <li><Link to="/products?category=Electronics" className="hover:text-[#D94E34] transition-colors">Electronics & Sound</Link></li>
-                <li><Link to="/products?category=Fashion" className="hover:text-[#D94E34] transition-colors">Everyday Apparel</Link></li>
-                <li><Link to="/products?category=Kids" className="hover:text-[#D94E34] transition-colors flex items-center gap-1.5"><span className="text-[#E59819]">🧸</span> Kids & Nursery</Link></li>
-                <li><Link to="/products?category=Home" className="hover:text-[#D94E34] transition-colors">Home & Living</Link></li>
-                <li><Link to="/products?category=Beauty" className="hover:text-[#D94E34] transition-colors">Skin Care & Self-Care</Link></li>
-                <li><Link to="/products" className="hover:text-[#D94E34] text-[#D94E34] font-bold transition-colors">Browse Full Catalog &rarr;</Link></li>
+              <h4 className="font-mono-tag font-bold text-xs text-[#FAF7F0] uppercase tracking-wider mb-3">Curated Shops</h4>
+              <ul className="space-y-2 text-xs font-mono-tag text-[#A8A29E]">
+                <li><Link to="/products?category=Electronics" className="hover:text-[#E05D44] transition-colors">Electronics & Sound</Link></li>
+                <li><Link to="/products?category=Fashion" className="hover:text-[#E05D44] transition-colors">Everyday Apparel</Link></li>
+                <li><Link to="/products?category=Kids" className="hover:text-[#E05D44] transition-colors flex items-center gap-1.5"><span className="text-[#E59819]">🧸</span> Kids & Nursery</Link></li>
+                <li><Link to="/products?category=Home" className="hover:text-[#E05D44] transition-colors">Home & Living</Link></li>
+                <li><Link to="/products?category=Beauty" className="hover:text-[#E05D44] transition-colors">Skin Care & Self-Care</Link></li>
+                <li><Link to="/products" className="hover:text-[#E05D44] text-[#E05D44] font-bold transition-colors">Browse Full Catalog &rarr;</Link></li>
               </ul>
             </div>
 
             {/* Column 3: Customer Care */}
             <div>
-              <h4 className="font-mono-tag font-bold text-xs text-textPrimary uppercase tracking-wider mb-3">Customer Care</h4>
-              <ul className="space-y-2 text-xs font-mono-tag text-textMuted">
-                <li><Link to="/orders" className="hover:text-[#D94E34] transition-colors">Track Your Order</Link></li>
-                <li><Link to="/cart" className="hover:text-[#D94E34] transition-colors">Review Shopping Bag</Link></li>
-                <li><Link to="/settings" className="hover:text-[#D94E34] transition-colors">Account Settings</Link></li>
-                <li><Link to="/login" className="hover:text-[#D94E34] transition-colors">Member Sign In</Link></li>
-                <li><Link to="/register" className="hover:text-[#D94E34] transition-colors">Join The Club</Link></li>
+              <h4 className="font-mono-tag font-bold text-xs text-[#FAF7F0] uppercase tracking-wider mb-3">Customer Care</h4>
+              <ul className="space-y-2 text-xs font-mono-tag text-[#A8A29E]">
+                <li><Link to="/orders" className="hover:text-[#E05D44] transition-colors">Track Your Order</Link></li>
+                <li><Link to="/cart" className="hover:text-[#E05D44] transition-colors">Review Shopping Bag</Link></li>
+                <li><Link to="/settings" className="hover:text-[#E05D44] transition-colors">Account Settings</Link></li>
+                <li><Link to="/login" className="hover:text-[#E05D44] transition-colors">Member Sign In</Link></li>
+                <li><Link to="/register" className="hover:text-[#E05D44] transition-colors">Join The Club</Link></li>
               </ul>
             </div>
 
             {/* Column 4: Portals & Makers */}
             <div>
-              <h4 className="font-mono-tag font-bold text-xs text-textPrimary uppercase tracking-wider mb-3">Maker Portals</h4>
-              <ul className="space-y-2 text-xs font-mono-tag text-textMuted">
-                <li><Link to="/vendor/apply" className="hover:text-[#D94E34] transition-colors">Become a Verified Maker</Link></li>
-                <li><Link to="/vendor/dashboard" className="hover:text-[#D94E34] transition-colors">Maker Dashboard</Link></li>
-                <li><Link to="/vendor/products" className="hover:text-[#D94E34] transition-colors">Product Inventory</Link></li>
-                <li><Link to="/admin/dashboard" className="hover:text-[#D94E34] transition-colors">Admin Console</Link></li>
-                <li><a href="/api-docs" target="_blank" rel="noreferrer" className="hover:text-[#D94E34] transition-colors">API Documentation</a></li>
+              <h4 className="font-mono-tag font-bold text-xs text-[#FAF7F0] uppercase tracking-wider mb-3">Maker Portals</h4>
+              <ul className="space-y-2 text-xs font-mono-tag text-[#A8A29E]">
+                <li><Link to="/vendor/apply" className="hover:text-[#E05D44] transition-colors">Become a Verified Maker</Link></li>
+                <li><Link to="/vendor/dashboard" className="hover:text-[#E05D44] transition-colors">Maker Dashboard</Link></li>
+                <li><Link to="/vendor/products" className="hover:text-[#E05D44] transition-colors">Product Inventory</Link></li>
+                <li><Link to="/admin/dashboard" className="hover:text-[#E05D44] transition-colors">Admin Console</Link></li>
+                <li><a href="/api-docs" target="_blank" rel="noreferrer" className="hover:text-[#E05D44] transition-colors">API Documentation</a></li>
               </ul>
             </div>
 
           </div>
 
           {/* Bottom Copyright & Guarantee */}
-          <div className="mt-10 pt-6 border-t border-[#E5DDD0] dark:border-[#38342F] flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono-tag text-textMuted gap-4">
+          <div className="mt-10 pt-6 border-t border-[#2C2723] flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono-tag text-[#8C827A] gap-4">
             <p>&copy; {new Date().getFullYear()} Mainstays Marketplace Inc. Crafted with Care.</p>
             <div className="flex flex-wrap items-center gap-5">
-              <span className="hover:text-textPrimary transition-colors cursor-pointer">Privacy Terms</span>
-              <span className="hover:text-textPrimary transition-colors cursor-pointer">Terms of Service</span>
-              <span className="hover:text-textPrimary transition-colors cursor-pointer">Ethical Sourcing</span>
-              <span className="hover:text-textPrimary transition-colors cursor-pointer">Status: 100% Operational</span>
+              <span className="hover:text-[#FAF7F0] transition-colors cursor-pointer">Privacy Terms</span>
+              <span className="hover:text-[#FAF7F0] transition-colors cursor-pointer">Terms of Service</span>
+              <span className="hover:text-[#FAF7F0] transition-colors cursor-pointer">Ethical Sourcing</span>
+              <span className="hover:text-[#FAF7F0] transition-colors cursor-pointer">Status: 100% Operational</span>
             </div>
           </div>
         </div>
