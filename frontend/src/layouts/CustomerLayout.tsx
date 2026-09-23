@@ -356,20 +356,20 @@ const CustomerLayout = () => {
         <Outlet />
       </main>
 
-      {/* Editorial Grounding Dark Footer (Distinct contrast from header and body) */}
-      <footer className="bg-[#181614] text-[#FAF7F0] border-t border-[#2C2723] relative mt-16 overflow-hidden">
+      {/* Editorial Grounding Footer with a distinct portal color */}
+      <footer className="bg-[#24443B] text-[#FFF8E7] border-t border-[#3D6658] relative mt-16 overflow-hidden">
         
         {/* Newsletter Strip */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-b border-[#2C2723]">
-          <div className="bg-[#221F1C] border border-[#35302B] rounded-2xl p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-lg">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 border-b border-[#6E4A35]">
+          <div className="bg-[#8B5E3C] border border-[#B9825A] rounded-2xl p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-lg">
             <div className="space-y-1.5 text-center lg:text-left max-w-lg">
               <span className="inline-block px-3 py-0.5 rounded-full bg-[#D94E34] text-[#FFF8E7] text-[10px] font-mono-tag uppercase tracking-wider font-bold">
                 The Mainstays Dispatch
               </span>
-              <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#FAF7F0] tracking-tight">
+              <h3 className="font-serif font-bold text-xl sm:text-2xl text-[#FFF8E7] tracking-tight">
                 Join our table & get 10% off your first haul
               </h3>
-              <p className="text-xs font-mono-tag text-[#A8A29E]">
+              <p className="text-xs font-mono-tag text-[#F6DCC8]">
                 Get early access to weekly small-batch drops, maker stories, and secret sales.
               </p>
             </div>
@@ -381,7 +381,7 @@ const CustomerLayout = () => {
                 placeholder="Enter your email address"
                 value={newsletterEmail}
                 onChange={(e) => setNewsletterEmail(e.target.value)}
-                className="w-full sm:w-72 bg-[#181614] border border-[#3D3732] rounded-xl px-4 py-2.5 text-xs font-mono-tag text-[#FAF7F0] placeholder:text-[#8C827A] focus:outline-none focus:ring-2 focus:ring-[#D94E34] focus:border-[#D94E34] transition-all"
+                className="w-full sm:w-72 bg-[#24443B] border border-[#6E9686] rounded-xl px-4 py-2.5 text-xs font-mono-tag text-[#FFF8E7] placeholder:text-[#B9D0C5] focus:outline-none focus:ring-2 focus:ring-[#F2B880] focus:border-[#F2B880] transition-all"
               />
               <button
                 type="submit"
@@ -403,7 +403,7 @@ const CustomerLayout = () => {
                 <div className="w-8 h-8 rounded-full bg-[#D94E34] text-[#FFF8E7] flex items-center justify-center font-serif font-black text-base shadow-xs">
                   M
                 </div>
-                <span className="font-serif font-black text-xl text-[#FAF7F0] tracking-tight">
+                <span className="font-serif font-black text-xl text-[#FFF8E7] tracking-tight">
                   Mainstays
                 </span>
               </div>
@@ -462,8 +462,8 @@ const CustomerLayout = () => {
           </div>
 
           {/* Bottom Copyright & Guarantee */}
-          <div className="mt-10 pt-6 border-t border-[#2C2723] flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono-tag text-[#8C827A] gap-4">
-            <p>&copy; {new Date().getFullYear()} Mainstays Marketplace Inc. Crafted with Care.</p>
+          <div className="mt-10 pt-6 border-t border-[#3D6658] flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono-tag text-[#B9D0C5] gap-4">
+            <p>&copy; 2016, Rahat Hasan Akanda</p>
             <div className="flex flex-wrap items-center gap-5">
               <span className="hover:text-[#FAF7F0] transition-colors cursor-pointer">Privacy Terms</span>
               <span className="hover:text-[#FAF7F0] transition-colors cursor-pointer">Terms of Service</span>
